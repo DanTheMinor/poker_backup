@@ -8,8 +8,8 @@ Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each { |file| require file }
 RSpec.configure do |config|
   config.after(:each) do
 
-    Test.all().each() do |test|
-      test.destroy()
+    Card.all().each() do |card|
+      card.destroy()
     end
 
   end
