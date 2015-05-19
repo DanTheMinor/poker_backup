@@ -1,9 +1,9 @@
 development:
   adapter: postgresql
-  database: foo_development
+  database: poker_development
   # template: template0
 
 test:
   adapter: postgresql
-  database: foo_test
+  database: poker_test
   # template: template0
