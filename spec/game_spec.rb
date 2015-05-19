@@ -21,5 +21,12 @@ describe(Game) do
     expect(Card.all.first.url).to(eq('2s.jpg'))
   end
 
-
+  describe('#deal') do
+    it('deals one card to a player') do
+      game = Game.create
+      player = game.players.create(name: "Ben")
+      game.deal(player)
+      expect(player.cards.length).to(eq(1))
+    end
+  end
 end
