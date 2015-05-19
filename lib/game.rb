@@ -21,4 +21,15 @@ class Game < ActiveRecord::Base
     player.cards << second_card
   end
 
+  def compare_cards(hand_1, hand_2)
+    #hand_1 and hand_2 are arrays of five card objects
+    #card objects contain a value and a face
+
+
+    #for full house logic
+    #compare the three cards for biggest for who wins
+    #compare the two cards for biggest
+    return #the best array of five cards
+
+  end
 end

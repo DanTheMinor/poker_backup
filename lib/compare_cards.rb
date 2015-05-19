@@ -1,110 +1,101 @@
-###module for comparing cards
+  ###module for comparing cards
+module CompareCards
+  # hand_types = {
+  #   "straight flush" => [is_straight_flush, compare_straight_flush],
+  #   "straight" => [is_straight, compare_straight],
+  #   "flush" => [is_flush, compare_flush],
+  #   "fullhouse" => [is_full_house, compare_full_house],
+  #   "four of a kind" => [is_four_of_a_kind, compare_four_of_a_kind],
+  #   "three of a kind" => [is_three_of_a_kind, compare_three_of_a_kind],
+  #   "one pair" => [is_one_pair, compare_one_pair],
+  #   "two pair" => [is_two_pair, compare_two_pair],
+  #   "high card" => [is_high_card, compare_high_card]
+  # }
+  #
+  #
+  #   def compare_cards(hand_1, hand_2)
+  #
+  #     ["straight flush",...,"one pair", "high card"].each do |type|
+  #       is_type? = hand_types.fetch(type)[0]
+  #       compare_type = hand_types.fetch(type)[1]
+  #       if hand_1.is_type? && hand_2.is_type?
+  #         return hand1.compare_type(hand_2)
+  #       elsif hand_1.is_type?
+  #         return hand_1
+  #       elsif hand_2.is_type?
+  #         return hand_2
+  #       end
+  #     end
+  #   end
 
+    def compare_values(other_hand)
+      true_value1 = 0
+      true_value2 = 0
 
+      self.each do |card|
+        true_value1 += card.true_value
+      end
+      other_hand.each do |card|
+        true_value2 += card.true_value
+      end
 
-  def best_hand do |hand| #hand is an array with 7 cards
-      #loop
-        #card_set1 = best
-        #card_set2 = another_set
-        #best = compare_cards(card_set1, card_set2)
-      #end
-      #return best
-  end
-
-
-  def compare_cards do |hand_1, hand_2|
-    #hand_1 and hand_2 are arrays of five card objects
-    #card objects contain a value and a face
-
-
-    #for full house logic
-      #compare the three cards for biggest for who wins
-      #compare the two cards for biggest
-      return #the best array of five cards
-
-  end
-
-  def winner do |hand_1, hand_2| #arrays of 7 cards
-    #hand1 = best_hand(hand_1)
-    #hand2 = best_hand(hand_2) #arrays of 5 cards
-    #
-    if hand1 == hand2
-      return 3#for tie
-    elsif hand1 ==  compare_cards(hand1, hand2)
-      return 1#player 1 wins
-    else
-      return 2#player 2 wins
+      if true_value1 > true_value2
+        return self
+      elsif true_value1 < true_value2
+        return other_hand
+      else
+        return "tie"
+      end
     end
-  end
 
+    def compare_flush(other_hand)
+      self.compare_values(other_hand)
+    end
 
+    def compare_straight(other_hand)
+        #will not work for wheels!
 
-  def is_flush do |hand| #returns whether a particular hand is a flush
-    suit = hand.card(1).suit()
-    is_flush = true
-    hand.each do |card|
-        if suit != card.suit()
-          is_flush == false
+        self.compare_values(other_hand)
+    end
+
+    def compare_straight_flush(other_hand)
+      #will not work for wheels!
+
+      self.compare_values(other_hand)
+    end
+
+    def compare_three_kind(other_hand)
+      self_values = self.map {|card| card.true_value}
+      three_kind_value1 = self_values.select {|value| self_values.count(value) == 3}.first
+      other_hand_values = other_hand.map {|card| card.true_value}
+      three_kind_value2 = other_hand_values.select {|value| other_hand_values.count(value) == 3}.first
+
+      if three_kind_value1 > three_kind_value2
+        return self
+      else
+        return other_hand
+      end
+    end
+
+    def compare_full_house(other_hand)
+      self.compare_three_kind(other_hand)
+    end
+
+    def compare_high_card(other_hand)
+      self_values = self.map {|card| card.true_value}.sort.reverse
+      other_hand_values = other_hand.map {|card| card.true_value}.sort.reverse
+      value_pairs = self_values.zip(other_hand_values)
+      value_pairs.each do |pair|
+        if pair[0] > pair[1]
+          return self
+        elsif pair[1] > pair[0]
+          return other_hand
         end
-
-    end
-  end
-
-
-  def is_straight do |hand| #returns whether a particular hand is a straight
-    straight = hand.sort_cards()
-    first = straight.at(0)
-    index = 1
-    is_straight = true
-    do while index < straight.length
-      if (first + 1) == straight.at(index)
-        first = straight.at(index)
-      else
-        is_straight = false
       end
-      index += 1
+      'tie'
     end
 
-    #special case for determing in its a wheel straight
-    if straight.at(4) == 14
-      if straight.at(0) == 2 && straight.at(1) == 3 && straight.at(2) == 4 && straight.at(3) == 5
-        is_straight = true
-      else
-        is_straight = false
-      end
+    def compare_two_pair(other_hand)
+
     end
-
-    return is_straight
-  end
-
-  def max_matches #returns if you have a pair, three of a kind or four of a kind and what the card value is
-    #return [0, value] if no matches
-    #return [2, value] if pair
-    #return [3, value] if three ofa  kind
-    #reutrn [4, value] if four of a kind
-  end
-
-
-  def is_full_house do |hand|
-    full_house = hand.sort_cards()
-      is_three? = true
-      is_pair? = true
-      find_three = hand.at(0)
-
-  end
-
-  def sort_cards do
-    @card_sort = []
-    self.cards().each() do |card|
-      true_value = card.true_value()
-      @card_sort.push(true_value)
-    end
-    @card_sort.sort!
-  end
-
-
-
-
-  def find_kick do |hand|
-
-  end
+end
