@@ -5,8 +5,8 @@ module CompareCards
   #   "straight" => [is_straight, compare_straight],
   #   "flush" => [is_flush, compare_flush],
   #   "fullhouse" => [is_full_house, compare_full_house],
-  #   "four of a kind" => [is_four_of_a_kind, compare_four_of_a_kind],
-  #   "three of a kind" => [is_three_of_a_kind, compare_three_of_a_kind],
+  #   "four of a kind" => [is_four_kind, compare_four_of_a_kind],
+  #   "three of a kind" => [is_three_kind, compare_three_of_a_kind],
   #   "one pair" => [is_one_pair, compare_one_pair],
   #   "two pair" => [is_two_pair, compare_two_pair],
   #   "high card" => [is_high_card, compare_high_card]
