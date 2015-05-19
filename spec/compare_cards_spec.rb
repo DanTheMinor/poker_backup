@@ -38,6 +38,25 @@ describe(CompareCards) do
         expect(test_hand1.compare_high_card(test_hand2)).to(eq(test_hand2))
       end
     end
+    
+    describe("compare_two_pair") do
+      it('returns the better two pair') do
+        card1 = Card.create(value: "3", suit: "s")
+        card2 = Card.create(value: "3", suit: "d")
+        card3 = Card.create(value: "4", suit: "h")
+        card4 = Card.create(value: "4", suit: "s")
+        card5 = Card.create(value: "7", suit: "d")
+        card6 = Card.create(value: "8", suit: "s")
+        card7 = Card.create(value: "8", suit: "d")
+        card8 = Card.create(value: "4", suit: "d")
+        card9 = Card.create(value: "4", suit: "c")
+        card10 = Card.create(value: "a", suit: "d")
+
+        test_hand1 = [card1, card2, card3, card4, card5]
+        test_hand2 = [card6, card7, card8, card9, card10]
+        expect(test_hand1.compare_two_pair(test_hand2)).to(eq(test_hand2))
+      end
+    end
 
     describe('is_straight') do
       it('returns whether or not an array of cards is a straight') do
