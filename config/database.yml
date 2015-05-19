@@ -1,0 +1,9 @@
+development:
+  adapter: postgresql
+  database: foo_development
+  # template: template0
+
+test:
+  adapter: postgresql
+  database: foo_test
+  # template: template0
