@@ -1,5 +1,6 @@
 class Game < ActiveRecord::Base
   has_many :players
+  has_many :hands
   after_save(:populate_deck)
 
   @@suits = ["s","c","d","h"]

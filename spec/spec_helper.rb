@@ -20,5 +20,9 @@ RSpec.configure do |config|
       player.destroy()
     end
 
+    Hand.all().each() do |hand|
+      hand.destroy()
+    end
+
   end
 end
