@@ -9,7 +9,7 @@ class Game < ActiveRecord::Base
   def populate_deck
     @@suits.each do |suit|
       @@values.each do |value|
-        Card.create(suit: suit, value: value, url: value + suit + ".jpg")  #populate cards database
+        Card.create(suit: suit, value: value, url: suit + value + ".png")  #populate cards database
       end
     end
   end

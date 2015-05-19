@@ -1,6 +1,7 @@
 class Hand < ActiveRecord::Base
   has_many :cards
   belongs_to :game
+  include CompareCards
 
   def flop_deal
     first_card = Card.where(player_id: nil).sample
