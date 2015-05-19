@@ -26,7 +26,20 @@ describe(Game) do
       game = Game.create
       player = game.players.create(name: "Ben")
       game.deal(player)
-      expect(player.cards.length).to(eq(1))
+      expect(player.cards.length).to(eq(2))
+    end
+
+    it('deals two differents cards to a player') do
+      50.times do
+        game = Game.create
+        player = game.players.create(name: "Ben")
+        game.deal(player)
+        expect(player.cards[0] == player.cards[1]).to(eq(false))
+
+        game.destroy
+        player.destroy
+        Card.delete_all
+      end
     end
   end
 end

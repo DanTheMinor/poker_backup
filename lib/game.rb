@@ -14,8 +14,10 @@ class Game < ActiveRecord::Base
   end
 
   def deal(player)
-    dealt_card = Card.where(value: "2", suit: "s").first
-    player.cards << dealt_card
+    first_card = Card.all.sample
+    player.cards << first_card
+    second_card = Card.where(player_id: nil).sample
+    player.cards << second_card
   end
 
 end

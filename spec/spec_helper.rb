@@ -12,5 +12,13 @@ RSpec.configure do |config|
       card.destroy()
     end
 
+    Game.all().each() do |game|
+      game.destroy()
+    end
+
+    Player.all().each() do |player|
+      player.destroy()
+    end
+
   end
 end
