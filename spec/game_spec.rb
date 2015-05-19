@@ -18,7 +18,7 @@ describe(Game) do
 
   it('populates card database with cards with picture urls') do
     Game.create()
-    expect(Card.all.first.url).to(eq('2s.jpg'))
+    expect(Card.all.first.url).to(eq('s2.png'))
   end
 
   describe('#deal') do
