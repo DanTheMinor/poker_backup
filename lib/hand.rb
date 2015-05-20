@@ -47,4 +47,24 @@ class Hand < ActiveRecord::Base
       return 'tie'
     end
   end
+
+  def handle_preflop(player)
+
+  end
+
+  def handle_postflop(player, player2)
+    if player.choice == 'call'
+      #change current round to next
+    elsif player.choice == 'fold'
+      #chang current round to over
+    elsif player.choice == 'raise'
+      handle_postflop(player2)
+    end
+
+  end
+
+
+
+
+
 end
