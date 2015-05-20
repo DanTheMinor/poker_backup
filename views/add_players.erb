@@ -1,15 +1,30 @@
 <h1>Choose players for the game: <%=@game.name %> </h1>
 
-<h1> Add Players Name </h1>
 
+
+<h2> Add 2 Players to the Game </h2>
+<br><br>
+
+<p>Players ready for <%=@game.name%>: </p>
+<hr>
+<ul class="list-unstyled">
+  <% @game.players.each do |player| %>
+  <li> <%=player.name %></li>
+  <% end %>
+</ul>
 
 <% if @game.players.length < 2 %>
+
+<p> Add Players Name </p>
+
   <div class= "form-group">
     <form action="/add_player" method="post">
+      <input id= "game_id" name= "game_id" type="hidden" value= '<%= @game.id%>'>
       <input id="name" name="name" type="text">
-      <button class= "btn-success" type= "submit"> Add Player </button>
+      <button class= "btn btn-success" type= "submit"> Add Player </button>
     </form>
   </div>
 <% else %>
-  <a href="/preflop" type="button" class="btn-success">Deal first hand</a>
+
+  <a href="/preflop" type="button" class="btn btn-success">Deal first hand</a>
 <% end %>

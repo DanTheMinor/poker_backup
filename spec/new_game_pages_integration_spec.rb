@@ -18,4 +18,12 @@ describe("starting a game", type: :feature) do
     click_button 'Start game'
     expect(page).to(have_content('showdown'))
   end
+
+  it('adds a player to a game when the player add form is submitted') do
+    game = Game.create(name: 'showdown')
+    visit "/game/#{game.id}"
+    fill_in("name", with: "ben")
+    click_button("Add Player")
+    expect(page).to(have_content("ben"))
+  end
 end
