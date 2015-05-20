@@ -34,3 +34,16 @@ get "/game/:id/preflop" do |id|
   @player2 = @game.players[1]
   erb(:hand)
 end
+
+get "/game/:id/hand" do |id|
+  @game = Game.find(id)
+  @player1 = @game.players[0]
+  @player2 = @game.players[1]
+  erb(:hand)
+end
+
+post "/game/:id/postflop" do |id|
+  game = Game.find(id)
+  game.current_hand.flop_deal
+  redirect "/game/#{game.id}/hand"
+end

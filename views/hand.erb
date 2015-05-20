@@ -8,7 +8,7 @@
   <div class= "col-md-6">
     <br><br>
     <br>
-    <form action "">
+    <form action="/">
       <p>Raise</p>
       <input type="text" name="some_name" value="">
       <button class="btn btn-success" type="submit"> Raise </Button>
@@ -16,24 +16,24 @@
     <br>
 
 
-    <form action "">
+    <form action="/">
       <p>Bet</p>
       <input type="text" name="some_name" value="">
       <button class="btn btn-success" type="submit"> Bet</Button>
     </form>
       <br>
 
-    <form action "">
+    <form action="/">
       <button class="btn btn-lg btn-info" type="submit"> Check </Button>
     </form>
     <br>
 
-    <form action "">
+    <form action="/">
       <button class="btn btn-info" type="submit"> Call </Button>
     </form>
     <br>
 
-    <form action "">
+    <form action="/">
       <button class="btn btn-warning" type="submit"> Fold </Button>
     </form>
   </div>
@@ -44,7 +44,7 @@
 <% if @game.current_hand.cards.any? %>
   <div class="row">
     <% @game.current_hand.cards.each do |board_card| %>
-      <img src="/images/resources/<%= board_card.url %>" />
+      <img class="face_up" src="/images/resources/<%= board_card.url %>" />
     <% end %>
   </div>
   <strong><hr></strong>
@@ -59,32 +59,32 @@
   <div class= "col-md-6">
     <br><br>
     <br>
-    <form action "">
+    <form action="/">
       <p>Raise</p>
       <input type="text" name="some_name" value="">
       <button class="btn btn-success" type="submit"> Raise </Button>
     </form>
     <br>
 
-    <form action "">
+    <form action="/">
       <p>Bet</p>
       <input type="text" name="some_name" value="">
       <button class="btn btn-success" type="submit"> Bet</Button>
     </form>
     <br>
 
-    <form action "">
+    <form action="/game/<%=@game.id%>/postflop" method="post">
       <button class="btn btn-info" type="submit"> Check </Button>
     </form>
     <br>
 
 
-    <form action "">
+    <form action="/">
       <button class="btn btn-info" type="submit"> Call </Button>
     </form>
     <br>
 
-    <form action "">
+    <form action="/">
       <button class="btn btn-warning" type="submit"> Fold </Button>
     </form>
   </div>
