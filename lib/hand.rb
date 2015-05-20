@@ -1,4 +1,4 @@
-require "compare_cards"
+# require "compare_cards"
 
 class Hand < ActiveRecord::Base
   has_many :cards
