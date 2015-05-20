@@ -110,15 +110,51 @@ class Hand < ActiveRecord::Base
   end
 
   def change_round
+    game = Game.find(self.game_id)
+    game.players[0].choice = "new round"
+    game.players[1].choice = "new round"
     if self.current_round == "preflop"
+      self.flop_deal
       self.current_round == "flop"
     elsif self.current_round == 'flop'
+      self.turn_deal
       self.current_round = 'turn'
     elsif self.current_round == 'turn'
+      self.river_deal
       self.current_round = 'river'
     else
       self.current_round = 'show cards'
     end
+  end
+
+  def is_all_in
+    game = Game.find(self.game_id)
+    player1 = game.players[0]
+    player2 = game.players[1]
+    if player1.choice == 'call' && player2.choice == 'raise' || player1.choice == 'raise' && player2.choice == 'call'
+      if player1.stack == 0 || player2.stack == 0
+        self.deal_remaining
+        self.winner
+      end
+    end
+    #wasnt an all in
+  end
+
+  def deal_remaining
+    if self.current_round == "preflop"
+      self.flop_deal
+      self.turn_deal
+      self.river_deal
+    elsif self.current_round == "flop"
+      self.turn_deal
+      self.river_deal
+    else
+      self.river_deal
+    end
+  end
+
+  def special_bet
+
   end
 
 
