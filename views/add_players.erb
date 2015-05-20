@@ -1,0 +1,15 @@
+<h1>Choose players for the game: <%=@game.name %> </h1>
+
+<h1> Add Players Name </h1>
+
+
+<% if @game.players.length < 2 %>
+  <div class= "form-group">
+    <form action="/add_player" method="post">
+      <input id="name" name="name" type="text">
+      <button class= "btn-success" type= "submit"> Add Player </button>
+    </form>
+  </div>
+<% else %>
+  <a href="/preflop" type="button" class="btn-success">Deal first hand</a>
+<% end %>
