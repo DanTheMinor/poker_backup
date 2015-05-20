@@ -88,7 +88,11 @@ class Hand < ActiveRecord::Base
   def current_choices(player, other_player) #returns an array of the current players choices
     #depedning on round,
     #the player is whoever your displaying choices for
-    if self.current_round == 'preflop'
+    if is_all_in?
+      self.deal_remaining
+      self.winner
+      return [] #no buttons as no choices are available
+    elsif self.current_round == 'preflop'
       if player.is_bb == true
         if other_player.choice == 'call'
           return ["check", "bet/raise"]
@@ -111,11 +115,19 @@ class Hand < ActiveRecord::Base
 
   def change_round
     game = Game.find(self.game_id)
+<<<<<<< HEAD
     game.players[0].update(choice: "new round")
     game.players[1].update(choice: "new round")
     if self.current_round == "preflop"
       self.flop_deal
       self.update(current_round: "flop")
+=======
+    game.players[0].choice = "new round"
+    game.players[1].choice = "new round"
+    if self.current_round == "preflop"
+      self.flop_deal
+      self.current_round == "flop"
+>>>>>>> 0bed934f648deac398b3c5e5cdcca35dfdd3bd37
     elsif self.current_round == 'flop'
       self.turn_deal
       self.current_round = 'turn'
@@ -125,6 +137,44 @@ class Hand < ActiveRecord::Base
     else
       self.current_round = 'show cards'
     end
+  end
+
+  def is_all_in?
+    game = Game.find(self.game_id)
+    player1 = game.players[0]
+    player2 = game.players[1]
+    if player1.choice == 'call' && player2.choice == 'raise' || player1.choice == 'raise' && player2.choice == 'call'
+      if player1.stack == 0 || player2.stack == 0
+        return true
+      end
+    end
+    return false
+  end
+
+  def deal_remaining
+    if self.current_round == "preflop"
+      self.flop_deal
+      self.turn_deal
+      self.river_deal
+    elsif self.current_round == "flop"
+      self.turn_deal
+      self.river_deal
+    else
+      self.river_deal
+    end
+  end
+
+  def special_bet(bet_choice, player)
+    #DO NOT CALL THIS METHOD IF THE PLAYER INOUT AMOUNT MANUALLY
+    bet = 0
+    if bet_choice == 'half pot'
+      bet = (self.pot / 2)
+    elsif bet_choice == 'pot'
+      bet = self.pot
+    else #CHOICE WAS ALL IN
+      bet = player.stack()
+    end
+    return bet
   end
 
 
