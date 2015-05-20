@@ -1,6 +1,6 @@
 require('bundler/setup')
 Bundler.require(:default, :production)
-
+require "pry"
 Dir[File.dirname(__FILE__) + '/lib/*.rb'].each { |file| require file}
 
 get "/" do
@@ -27,6 +27,12 @@ post "/add_player" do
   redirect "/game/#{game.id}"
 end
 
-get "/preflop" do
-
+get "/game/:id/preflop" do |id|
+  @game = Game.find(id)
+  @game.players.each do |player|
+    @game.deal(player)
+  end
+  @player1 = @game.players[0]
+  @player2 = @game.players[1]
+  erb(:hand)
 end
