@@ -57,7 +57,7 @@ class Hand < ActiveRecord::Base
       return player1
     elsif compare_card(player1_hand, player2_hand) == player2_hand
       self.winnder_id = player2.id
-      player2.stack += self.pot()
+      player2.stack += self.pot() #gives the winner the money in the pot
       return player2
     else
       return 'tie'
@@ -71,28 +71,40 @@ class Hand < ActiveRecord::Base
     if player.choice == 'call'
       if current_round != 'preflop'
           change_round()
-      elsif player.is_bb? == true
+      elsif player.is_bb == true
         change_round()
       end
     elsif player.choice == 'fold'
       self.current_round = 'game over'
-      other_player.stack += self.pot()
+      other_player.stack += self.pot() #gives the winner the money in the pot
       self.winner_id = other_player.id()
-      #change current game to over
-      #declare other player as winner (2 player game only)
-      #base who's turn it is on next round
-      #possibly user @winner in winner method to allow assignment here too
     #there is no need for an if == raise because it will never change the round
     elsif player.choice == 'check'
-      if player.is_bb? == false
+      if player.is_bb == false
         change_round()
       end
     end
+  end
 
-    #method that will contain handle postflop
-      #if player.is_turn == turn
-
-
+  def current_choices(player, other_player) #returns an array of the current players choices
+    #depedning on round,
+    #the player is whoever your displaying choices for
+    if self.current_round == 'preflop'
+      if player.is_bb == true
+        if other_player.choice == 'call'
+          return ["check", "bet/raise"]
+        else
+          return ["call", "fold", "bet/raise"]
+        end
+      end
+    else
+      if other_player.choice == "new round"
+        return ["check", "bet/raise"]
+      elsif other_player.choice == "check" && player.is_bb == false
+        return ["check", "bet/raise"]
+      else
+        return ["call", "fold", "bet/raise"]
+      end
   end
 
   def change_round

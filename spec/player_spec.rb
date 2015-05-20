@@ -31,6 +31,10 @@ describe(Player) do
     end
   end
 
+  describe('#is_bb') do
+    game = Game.create()
+  end
+
 
 
 end

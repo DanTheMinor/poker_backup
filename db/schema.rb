@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150520184211) do
+ActiveRecord::Schema.define(version: 20150520203310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 20150520184211) do
     t.integer  "stack"
     t.string   "choice"
     t.binary   "is_turn"
+    t.binary   "is_bb"
   end
 
 end

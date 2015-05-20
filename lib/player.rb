@@ -38,22 +38,7 @@ class Player < ActiveRecord::Base
     add_to_pot
   end
 
-  def is_bb? #if the player is bb, return true
-    game = Game.find(self.game_id)
-    if self == game.players[0]
-      if self.game_id % 2 == 0
-        true
-      else
-        false
-      end
-    else
-      if self.game_id % 2 == 0
-        false
-      else
-        true
-      end
-    end
-  end
+
 
   # def won(amount) #gives the player who won the pot
   #
