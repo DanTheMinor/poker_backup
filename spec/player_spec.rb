@@ -20,12 +20,17 @@ describe(Player) do
   #   end
   # end
   # commented out as it relies on the hand class and should go there
+  #
+  #another method for the hand class
+  #bet special amount for half pot, full pot, all in
   describe('#bet') do
     it('Subtracts the amount bet from the betting player') do
       player1 = Player.create(stack: 5)
       player1.bet(2)
-      expect(player1.stack()).to.(eq(3))
+      expect(player1.stack()).to(eq(3))
     end
   end
+
+
 
 end
