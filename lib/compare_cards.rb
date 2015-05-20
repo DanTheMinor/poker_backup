@@ -36,6 +36,7 @@ module CompareCards
         values = values.select {|value| values.count(value) == 3} +
         values.select {|value| values.count(value) != 3}
       end
+    end
 
       def is_wheel?
         self == ['14', '5', '4', '3', '2']
