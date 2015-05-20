@@ -20,4 +20,22 @@ class Game < ActiveRecord::Base
     second_card = Card.where(player_id: nil).sample
     player.cards << second_card
   end
+
+  def current_hand
+    self.hands.last
+  end
+
+  def new_hand
+    hands.create(pot: 0, current_round: "preflop")
+    hand_count = hands.length
+    if hand_count % 2 == 0
+      players[0].update(is_bb: true)
+      players[1].update(is_bb: false)
+    else
+      players[1].update(is_bb: true)
+      players[0].update(is_bb: false)
+    end
+    Card.update_all(player_id: nil, hand_id: nil)
+    players.each {|player| deal(player)}
+  end
 end

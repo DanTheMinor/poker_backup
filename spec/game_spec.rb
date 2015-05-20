@@ -60,4 +60,15 @@ describe(Game) do
     #   end
     # end
   end
+
+  describe('#new_hand') do
+    it('switches the button from p1 to p2') do
+      game = Game.create()
+      player1 = game.players.create
+      player2 = game.players.create
+      game.new_hand
+      expect(player2.is_bb).to(eq(true))
+      expect(player1.is_bb).to(eq(false))
+    end
+  end
 end

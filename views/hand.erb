@@ -24,9 +24,8 @@
       <br>
 
     <form action "">
-      <button class="btn btn-info" type="submit"> Check </Button>
+      <button class="btn btn-lg btn-info" type="submit"> Check </Button>
     </form>
-    <br>
     <br>
 
     <form action "">
@@ -42,10 +41,52 @@
 
 <strong><hr></strong>
 
-<div class= "row">
-  <h3> <%=@player2.name %> </h3>
-  <img class="face_up" src="/images/resources/<%= @player2.cards[0].url%>" />
-  <img class="face_up" src="/images/resources/<%= @player2.cards[1].url%>" />
+<div class="row">
 </div>
+
+<strong><hr></strong>
+
+
+<div class= "row">
+  <div class= "col-md-5">
+    <h3> <%=@player2.name %> </h3>
+    <img class="face_up" src="/images/resources/<%= @player2.cards[0].url%>" />
+    <img class="face_up" src="/images/resources/<%= @player2.cards[1].url%>" />
+  </div>
+  <div class= "col-md-6">
+    <br><br>
+    <br>
+    <form action "">
+      <p>Raise</p>
+      <input type="text" name="some_name" value="">
+      <button class="btn btn-success" type="submit"> Raise </Button>
+    </form>
+    <br>
+
+    <form action "">
+      <p>Bet</p>
+      <input type="text" name="some_name" value="">
+      <button class="btn btn-success" type="submit"> Bet</Button>
+    </form>
+    <br>
+
+    <form action "">
+      <button class="btn btn-info" type="submit"> Check </Button>
+    </form>
+    <br>
+
+
+    <form action "">
+      <button class="btn btn-info" type="submit"> Call </Button>
+    </form>
+    <br>
+
+    <form action "">
+      <button class="btn btn-warning" type="submit"> Fold </Button>
+    </form>
+  </div>
+
+</div>
+
 
 <!-- <img id="card_back" src="/images/card_back.png" /> -->
