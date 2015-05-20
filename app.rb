@@ -37,6 +37,7 @@ get "/game/:id/hand" do |id|
   @game = Game.find(id)
   @player1 = @game.players[0]
   @player2 = @game.players[1]
+binding.pry
   erb(:hand)
 end
 
