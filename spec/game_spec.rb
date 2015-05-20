@@ -70,5 +70,23 @@ describe(Game) do
       expect(player2.is_bb).to(eq(true))
       expect(player1.is_bb).to(eq(false))
     end
+
+    it('deals out 4 player hole cards') do
+      game = Game.create()
+      player1 = game.players.create
+      player2 = game.players.create
+      game.new_hand
+      expect(Card.where(player_id: nil).length).to(eq(48))
+    end
+
+    it("resets hand_id's to nil" ) do
+      game = Game.create()
+      player1 = game.players.create
+      player2 = game.players.create
+      game.new_hand
+      game.current_hand.flop_deal
+      game.new_hand
+      expect(Card.where(hand_id: nil).length).to(eq(52))
+    end
   end
 end
