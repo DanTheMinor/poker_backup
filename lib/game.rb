@@ -29,15 +29,21 @@ class Game < ActiveRecord::Base
     hands.create(pot: 0, current_round: "preflop")
     hand_count = hands.length
     if hand_count % 2 == 0
-      players[0].update(is_bb: true)
-      players[1].update(is_bb: false)
+      players[0].update(is_bb: true, choice: "new round", is_turn: false)
+      players[1].update(is_bb: false, choice: "new round", is_turn: true)
     else
-      players[1].update(is_bb: true)
-      players[0].update(is_bb: false)
+      players[1].update(is_bb: true, choice: "new round", is_turn: false)
+      players[0].update(is_bb: false, choice: "new round", is_turn: true)
     end
     Card.update_all(player_id: nil, hand_id: nil)
     players.each {|player| deal(player)}
   end
 
+  def current_player
+    players.select {|player| player.is_turn == true}.first
+  end
 
+  def other_player
+    players.select {|player| player.is_turn == false}.first
+  end
 end

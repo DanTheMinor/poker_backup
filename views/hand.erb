@@ -5,39 +5,34 @@
     <img class="face_up" src="/images/resources/<%= @player1.cards[0].url%>" />
     <img class="face_up" src="/images/resources/<%= @player1.cards[1].url%>" />
 
-  
+
   </div>
   <div class= "col-md-6">
     <br><br>
     <br>
-    <form action="/">
-      <p>Raise</p>
-      <input type="text" name="some_name" value="">
-      <button class="btn btn-success" type="submit"> Raise </Button>
-    </form>
-    <br>
 
+    <% if @player1.is_turn %>
+      <% if @player2.choice == "bet/raise" %>
+        <h3><%= @player2.name %> bet/raises <%= @game.current_hand.last_bet %></h3>
+      <% end %>
+      <!-- display options -->
+      <% @game.current_hand.current_choices(@player1, @player2).each do |choice| %>
+        <% if choice == "bet/raise" %>
+          <p>Amount</p>
+          <form action="/game/<%=@game.id %>/<%= choice%>" method="post">
+            <input type="text" name="amount" >
+            <button class="btn btn-success" type="submit"> Bet/Raise </Button>
+          </form>
+          <br>
+        <% else %>
+          <form action="/game/<%=@game.id%>/<%=choice%>" method="post">
+            <button class = "btn btn-info" type="submit"><%=choice %></button>
+          </form>
+        <%end%>
 
-    <form action="/">
-      <p>Bet</p>
-      <input type="text" name="some_name" value="">
-      <button class="btn btn-success" type="submit"> Bet</Button>
-    </form>
-      <br>
+      <% end %>
+    <% end %>
 
-    <form action="/">
-      <button class="btn btn-lg btn-info" type="submit"> Check </Button>
-    </form>
-    <br>
-
-    <form action="/">
-      <button class="btn btn-info" type="submit"> Call </Button>
-    </form>
-    <br>
-
-    <form action="/">
-      <button class="btn btn-warning" type="submit"> Fold </Button>
-    </form>
   </div>
 </div>
 
@@ -60,35 +55,29 @@
   </div>
   <div class= "col-md-6">
     <br><br>
-    <br>
-    <form action="/">
-      <p>Raise</p>
-      <input type="text" name="some_name" value="">
-      <button class="btn btn-success" type="submit"> Raise </Button>
-    </form>
-    <br>
 
-    <form action="/">
-      <p>Bet</p>
-      <input type="text" name="some_name" value="">
-      <button class="btn btn-success" type="submit"> Bet</Button>
-    </form>
-    <br>
-
-    <form action="/game/<%=@game.id%>/postflop" method="post">
-      <button class="btn btn-info" type="submit"> Check </Button>
-    </form>
-    <br>
-
-
-    <form action="/">
-      <button class="btn btn-info" type="submit"> Call </Button>
-    </form>
+    <% if @player2.is_turn %>
+      <% if @player1.choice == "bet/raise" %>
+        <h3><%= @player1.name %> bet/raises <%= @game.current_hand.last_bet %></h3>
+      <% end %>
+      <!-- display options -->
+      <% @game.current_hand.current_choices(@player2, @player1).each do |choice| %>
+        <% if choice == "bet/raise" %>
+          <p>Amount</p>
+          <form action="/game/<%=@game.id %>/<%= choice%>" method="post">
+            <input type="text" name="amount" >
+            <button class="btn btn-success" type="submit"> Bet/Raise </Button>
+          </form>
+          <br>
+        <% else %>
+          <form action="/game/<%=@game.id%>/<%=choice%>" method="post">
+            <button class = "btn btn-info" type="submit"><%=choice %></button>
+          </form>
+        <%end%>
+      <% end %>
+    <% end %>
     <br>
 
-    <form action="/">
-      <button class="btn btn-warning" type="submit"> Fold </Button>
-    </form>
   </div>
 
 </div>

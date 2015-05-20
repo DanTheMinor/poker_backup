@@ -23,16 +23,14 @@ post "/add_player" do
   game_id = params.fetch("game_id").to_i
   game = Game.find(game_id)
   #will need to set stack for player
-  game.players.create(name: name)
+  game.players.create(name: name, stack: 200)
   redirect "/game/#{game.id}"
 end
 
 get "/game/:id/preflop" do |id|
-  @game = Game.find(id)
-  @game.new_hand
-  @player1 = @game.players[0]
-  @player2 = @game.players[1]
-  erb(:hand)
+  game = Game.find(id)
+  game.new_hand
+  redirect "/game/#{id}/hand"
 end
 
 get "/game/:id/hand" do |id|
@@ -46,4 +44,27 @@ post "/game/:id/postflop" do |id|
   game = Game.find(id)
   game.current_hand.flop_deal
   redirect "/game/#{game.id}/hand"
+end
+
+post "/game/:id/:choice" do |id, choice|
+  game = Game.find(id)
+  current_player = game.current_player
+
+  #update current_player choice
+  current_player.update(choice: choice)
+
+  #handle betting to update stacks
+  if choice == "bet/raise"
+    amount = params.fetch("amount").to_i
+    current_player.bet(amount)
+    game.current_hand.update(last_amount: amount)
+  elsif choice == "call"
+    amount_called = game.current_hand.last_bet.to_i
+    current_player.call(amount_called)
+  end
+
+  other_player = game.other_player
+  game.current_hand.handle_choice(current_player, other_player)
+
+  redirect "/game/#{id}/hand"
 end

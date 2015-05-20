@@ -65,8 +65,8 @@ class Hand < ActiveRecord::Base
 
   def handle_choice(player, other_player) #changes the round based on player's choice
     #the player is whoever made the decision
-    player.is_turn = false
-    other_player.is_turn = true
+    player.update(is_turn: false)
+    other_player.update(is_turn: true)
     if player.choice == 'call'
       if current_round != 'preflop'
           change_round()
@@ -110,11 +110,17 @@ class Hand < ActiveRecord::Base
   end
 
   def change_round
+    game = Game.find(self.game_id)
+    game.players[0].update(choice: "new round")
+    game.players[1].update(choice: "new round")
     if self.current_round == "preflop"
+      self.flop_deal
       self.current_round == "flop"
     elsif self.current_round == 'flop'
+      self.turn_deal
       self.current_round = 'turn'
     elsif self.current_round == 'turn'
+      self.river_deal
       self.current_round = 'river'
     else
       self.current_round = 'show cards'
