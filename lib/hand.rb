@@ -135,9 +135,10 @@ class Hand < ActiveRecord::Base
       if player1.stack == 0 || player2.stack == 0
         self.deal_remaining
         self.winner
+        return true
       end
     end
-    #wasnt an all in
+    return false
   end
 
   def deal_remaining

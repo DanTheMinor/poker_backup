@@ -142,4 +142,23 @@ describe(Hand) do
     end
   end
 
+  describe('#deal_remaining') do
+    it('will deal the remaining cards depending on current round') do
+      game = Game.create
+      hand = game.hands.create(pot: 0, current_round: "preflop")
+      hand.deal_remaining()
+      expect(hand.cards.length).to(eq(5))
+    end
+  end
+
+  describe('#is_all_in') do
+    it('will return true if either player is all-in') do
+      game = Game.create
+      player1 = game.players.create(name: "peter", choice: "call", is_bb: false, stack: 0) #stack: 500
+      player2 = game.players.create(name: "ben", choice: "raise", is_bb: true)
+      hand = game.hands.create(pot: 0, current_round: "preflop")
+      expect(hand.is_all_in).to(eq(true))
+    end
+  end
+
 end
