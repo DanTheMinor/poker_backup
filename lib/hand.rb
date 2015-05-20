@@ -1,7 +1,8 @@
+require "compare_cards"
+
 class Hand < ActiveRecord::Base
   has_many :cards
   belongs_to :game
-  include CompareCards
 
   def flop_deal
     first_card = Card.where(player_id: nil).sample
@@ -24,10 +25,10 @@ class Hand < ActiveRecord::Base
 
   def best_hand(player)
     seven_cards = player.cards + self.cards
-    five_card_subsets = seven_cards.combinations(5).to_a
+    five_card_subsets = seven_cards.combination(5).to_a
     best_hand = five_card_subsets.first
     five_card_subsets.each do |five_cards|
-      if compare_hands(five_cards, best_hand) == five_cards
+      if five_cards.compare_cards(best_hand) == five_cards
         best_hand = five_cards
       end
     end
@@ -39,9 +40,9 @@ class Hand < ActiveRecord::Base
     player2 = self.game.players[1]
     player1_hand = best_hand(player1)
     player2_hand = best_hand(player2)
-    if compare_cards(player1_hand, player2_hand) == player1_hand
+    if player1_hand.compare_cards(player2_hand) == player1_hand
       return player1
-    elsif compare_card(player1_hand, player2_hand) == player2_hand
+    elsif player1_hand.compare_cards(player2_hand) == player2_hand
       return player2
     else
       return 'tie'

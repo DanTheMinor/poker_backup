@@ -1,6 +1,4 @@
-  ###module for comparing cards
-module CompareCards
-# class Array
+class Array
 
   def compare_cards(other_hand)
 
@@ -18,55 +16,53 @@ module CompareCards
 
     end
 
-    def select(n)
-
+    def select_by_count(n)
+      # selects all values of a certain count
+      self.select {|value| self.count(value) == n}.uniq.sort.reverse
     end
 
-    def sorted_values
+    def sorted_distinct_values
       #sorts card values by bringing cards with higher repetition to the front of the array
-      #e.g. 23232 would become 22233
+      #e.g. 23232 would become 23
       #for cards with same repetition, prioritizes value next
-      #e.g. 89797 becomes 99778
+      #e.g. 89797 becomes 978
       values = self.map {|card| card.true_value}
-      # values.sort.reverse.sort_by {|value| -values.count(value)}
-      if values.any? {|value| values.count(value) == 4}
-        values = values.select {|value| values.count(value) == 4} +
-        values.select {|value| values.count(value) == 1}
-      elsif values.any? {|value| values.count(value) == 3}
-        values = values.select {|value| values.count(value) == 3} +
-        values.select {|value| values.count(value) != 3}
+      sorted_values = []
+      [4,3,2,1].each {|n| sorted_values += values.select_by_count(n)}
+      sorted_values
+    end
+
+    def is_wheel?
+      self == ['14', '5', '4', '3', '2']
+    end
+
+    def compare_same_type(other_hand)
+      #first sorts the two hands values to put them in the right form
+      #for value by value comparison
+      self_values = self.sorted_distinct_values
+      other_values = other_hand.sorted_distinct_values
+
+      #check for wheels first
+      if self_values.is_wheel? && other_values.is_wheel?
+        return 'tie'
+      elsif self_values.is_wheel?
+        return other_hand
+      elsif other_values.is_wheel?
+        return self
       end
 
-      def is_wheel?
-        self == ['14', '5', '4', '3', '2']
-      end
-
-      def compare_same_type(other_hand)
-        #first sorts the two hands values to put them in the right form
-        #for value by value comparison
-        self_values = self.sorted_values
-        other_values = other_hand.sorted_values
-
-        #check for wheels first
-        if self_values.is_wheel? && other_values.is_wheel?
-          return 'tie'
-        elsif self_values.is_wheel?
-          return other_hand
-        elsif other_values.is_wheel?
+      #compare the values
+      value_pairs = self_values.zip(other_values)
+      value_pairs.each do |pair|
+        if pair[0] > pair[1]
           return self
+        elsif pair[1] > pair[0]
+          return other_hand
         end
-
-        #compare the values
-        value_pairs = self_values.zip(other_values)
-        value_pairs.each do |pair|
-          if pair[0] > pair[1]
-            return self
-          elsif pair[1] > pair[0]
-            return other_hand
-          end
-        end
-        'tie'
       end
+      'tie'
+    end
+
 
     def what_type
       hand = self
@@ -91,9 +87,6 @@ module CompareCards
         type = "high card"
       end
     end
-    #sort method that orders by greatest number of a card first(for full houses and two pairs)
-    #sort by value
-    #check which value is first
 
     def is_flush #returns whether a particular hand is a flush
       hand = self
@@ -138,13 +131,6 @@ module CompareCards
       end
 
       return is_straight
-    end
-
-    def max_matches #returns if you have a pair, three of a kind or four of a kind and what the card value is
-      #return [0, value] if no matches
-      #return [2, value] if pair
-      #return [3, value] if three ofa  kind
-      #reutrn [4, value] if four of a kind
     end
 
 
@@ -226,4 +212,5 @@ module CompareCards
     end
 
 
-end
+  end
+  

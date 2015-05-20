@@ -28,5 +28,22 @@ describe(Hand) do
       hand.cards.create(value: "a", suit: "d")
       expect(hand.winner).to(eq(player2))
     end
+
+    it('declares a tie if the players have the same strength hand') do
+      game = Game.create
+      player1 = game.players.create(name: "peter")
+      player2 = game.players.create(name: "ben")
+      hand = game.hands.create(pot: 0)
+      player1.cards.create(value: "7", suit: "s")
+      player1.cards.create(value: "4", suit: "c")
+      player2.cards.create(value: "7", suit: "c")
+      player2.cards.create(value: "3", suit: "d")
+      hand.cards.create(value: "a", suit: "s")
+      hand.cards.create(value: "a", suit: "c")
+      hand.cards.create(value: "a", suit: "h")
+      hand.cards.create(value: "a", suit: "d")
+      hand.cards.create(value: "2", suit: "h")
+      expect(hand.winner).to(eq('tie'))
+    end
   end
 end
