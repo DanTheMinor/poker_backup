@@ -1,0 +1,97 @@
+
+<div class="row">
+  <div class= "col-md-5">
+    <h3><%= @player1.name%> </h3>
+    <img class="face_up" src="/images/resources/<%= @player1.cards[0].url%>" />
+    <img class="face_up" src="/images/resources/<%= @player1.cards[1].url%>" />
+
+  
+  </div>
+  <div class= "col-md-6">
+    <br><br>
+    <br>
+    <form action="/">
+      <p>Raise</p>
+      <input type="text" name="some_name" value="">
+      <button class="btn btn-success" type="submit"> Raise </Button>
+    </form>
+    <br>
+
+
+    <form action="/">
+      <p>Bet</p>
+      <input type="text" name="some_name" value="">
+      <button class="btn btn-success" type="submit"> Bet</Button>
+    </form>
+      <br>
+
+    <form action="/">
+      <button class="btn btn-lg btn-info" type="submit"> Check </Button>
+    </form>
+    <br>
+
+    <form action="/">
+      <button class="btn btn-info" type="submit"> Call </Button>
+    </form>
+    <br>
+
+    <form action="/">
+      <button class="btn btn-warning" type="submit"> Fold </Button>
+    </form>
+  </div>
+</div>
+
+<strong><hr></strong>
+
+<% if @game.current_hand.cards.any? %>
+  <div class="row">
+    <% @game.current_hand.cards.each do |board_card| %>
+      <img class="face_up" src="/images/resources/<%= board_card.url %>" />
+    <% end %>
+  </div>
+  <strong><hr></strong>
+<% end %>
+
+<div class= "row">
+  <div class= "col-md-5">
+    <h3> <%=@player2.name %> </h3>
+    <img class="face_up" src="/images/resources/<%= @player2.cards[0].url%>" />
+    <img class="face_up" src="/images/resources/<%= @player2.cards[1].url%>" />
+  </div>
+  <div class= "col-md-6">
+    <br><br>
+    <br>
+    <form action="/">
+      <p>Raise</p>
+      <input type="text" name="some_name" value="">
+      <button class="btn btn-success" type="submit"> Raise </Button>
+    </form>
+    <br>
+
+    <form action="/">
+      <p>Bet</p>
+      <input type="text" name="some_name" value="">
+      <button class="btn btn-success" type="submit"> Bet</Button>
+    </form>
+    <br>
+
+    <form action="/game/<%=@game.id%>/postflop" method="post">
+      <button class="btn btn-info" type="submit"> Check </Button>
+    </form>
+    <br>
+
+
+    <form action="/">
+      <button class="btn btn-info" type="submit"> Call </Button>
+    </form>
+    <br>
+
+    <form action="/">
+      <button class="btn btn-warning" type="submit"> Fold </Button>
+    </form>
+  </div>
+
+</div>
+
+
+<!-- <img id="card_back" src="/images/card_back.png" /> -->

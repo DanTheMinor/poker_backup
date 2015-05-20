@@ -15,21 +15,28 @@ class Game < ActiveRecord::Base
   end
 
   def deal(player)
-    first_card = Card.all.sample
+    first_card = Card.where(player_id: nil).sample
     player.cards << first_card
     second_card = Card.where(player_id: nil).sample
     player.cards << second_card
   end
 
-  def compare_cards(hand_1, hand_2)
-    #hand_1 and hand_2 are arrays of five card objects
-    #card objects contain a value and a face
+  def current_hand
+    self.hands.last
+  end
 
-
-    #for full house logic
-    #compare the three cards for biggest for who wins
-    #compare the two cards for biggest
-    return #the best array of five cards
+  def new_hand
+    hands.create(pot: 0, current_round: "preflop")
+    hand_count = hands.length
+    if hand_count % 2 == 0
+      players[0].update(is_bb: true)
+      players[1].update(is_bb: false)
+    else
+      players[1].update(is_bb: true)
+      players[0].update(is_bb: false)
+    end
+    Card.update_all(player_id: nil, hand_id: nil)
+    players.each {|player| deal(player)}
   end
 
 
