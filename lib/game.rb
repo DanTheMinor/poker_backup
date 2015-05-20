@@ -30,6 +30,7 @@ class Game < ActiveRecord::Base
     #compare the three cards for biggest for who wins
     #compare the two cards for biggest
     return #the best array of five cards
-
   end
+
+
 end

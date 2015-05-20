@@ -3,6 +3,18 @@ class Hand < ActiveRecord::Base
   belongs_to :game
   include CompareCards
 
+
+  # def part_of_initialize --This is meant to be built into intialize method
+  #   if game_id == even
+  #     player1 = big blind
+  #     player2 = small blind
+  #   else
+  #     player1 = small blind
+  #     player2 = big blind
+  #   end
+  # end
+
+
   def flop_deal
     first_card = Card.where(player_id: nil).sample
     self.cards << first_card
@@ -40,31 +52,60 @@ class Hand < ActiveRecord::Base
     player1_hand = best_hand(player1)
     player2_hand = best_hand(player2)
     if compare_cards(player1_hand, player2_hand) == player1_hand
+      player1.stack += self.pot()
+      self.winner_id = player1.id
       return player1
     elsif compare_card(player1_hand, player2_hand) == player2_hand
+      self.winnder_id = player2.id
+      player2.stack += self.pot()
       return player2
     else
       return 'tie'
     end
   end
 
-  def handle_preflop(player)
-
-  end
-
-  def handle_postflop(player, player2)
+  def handle_choice(player, other_player) #changes the round based on player's choice
+    #the player is whoever made the decision
+    player.is_turn = false
+    other_player.is_turn = true
     if player.choice == 'call'
-      #change current round to next
+      if current_round != 'preflop'
+          change_round()
+      elsif player.is_bb? == true
+        change_round()
+      end
     elsif player.choice == 'fold'
-      #chang current round to over
-    elsif player.choice == 'raise'
-      handle_postflop(player2)
+      self.current_round = 'game over'
+      other_player.stack += self.pot()
+      self.winner_id = other_player.id()
+      #change current game to over
+      #declare other player as winner (2 player game only)
+      #base who's turn it is on next round
+      #possibly user @winner in winner method to allow assignment here too
+    #there is no need for an if == raise because it will never change the round
+    elsif player.choice == 'check'
+      if player.is_bb? == false
+        change_round()
+      end
     end
 
+    #method that will contain handle postflop
+      #if player.is_turn == turn
+
+
   end
 
-
-
+  def change_round
+    if self.current_round == "preflop"
+      self.current_round == "flop"
+    elsif self.current_round == 'flop'
+      self.current_round = 'turn'
+    elsif self.current_round == 'turn'
+      self.current_round = 'river'
+    else
+      self.current_round = 'show cards'
+    end
+  end
 
 
 end
