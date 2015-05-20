@@ -1,14 +1,16 @@
 
 <div class="row">
   <h3><%= @player1.name%> </h3>
-  <img src="/images/resources/<%= @player1.cards[0].url%>" />
-  <img src="/images/resources/<%= @player1.cards[1].url%>" />
+  <img class="face_up" src="/images/resources/<%= @player1.cards[0].url%>" />
+  <img class="face_up" src="/images/resources/<%= @player1.cards[1].url%>" />
 </div>
 
 <strong><hr></strong>
 
 <div class= "row">
   <h3> <%=@player2.name %> </h3>
-  <img src="/images/resources/<%= @player2.cards[0].url%>" />
-  <img src="/images/resources/<%= @player2.cards[1].url%>" />
+  <img class="face_up" src="/images/resources/<%= @player2.cards[0].url%>" />
+  <img class="face_up" src="/images/resources/<%= @player2.cards[1].url%>" />
 </div>
+
+<!-- <img id="card_back" src="/images/card_back.png" /> -->
