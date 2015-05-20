@@ -96,6 +96,8 @@ class Hand < ActiveRecord::Base
         else
           return ["call", "fold", "bet/raise"]
         end
+      else
+        return ["call", "fold", "bet/raise"]
       end
     else
       if other_player.choice == "new round"
@@ -105,6 +107,7 @@ class Hand < ActiveRecord::Base
       else
         return ["call", "fold", "bet/raise"]
       end
+    end
   end
 
   def change_round

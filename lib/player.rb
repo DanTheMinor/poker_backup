@@ -38,14 +38,4 @@ class Player < ActiveRecord::Base
     add_to_pot
   end
 
-
-
-  # def won(amount) #gives the player who won the pot
-  #
-  # end
-
-  def fold()
-
-  end
-
 end
