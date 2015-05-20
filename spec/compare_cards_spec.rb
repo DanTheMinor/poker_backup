@@ -38,7 +38,7 @@ describe(CompareCards) do
         expect(test_hand1.compare_high_card(test_hand2)).to(eq(test_hand2))
       end
     end
-    
+
     describe("compare_two_pair") do
       it('returns the better two pair') do
         card1 = Card.create(value: "3", suit: "s")
@@ -301,6 +301,188 @@ describe(CompareCards) do
         card5 = Card.create({:suit => "s", :value => "6"})
         test_hand = [card1, card2, card3, card4, card5]
         expect(test_hand.what_type()).to(eq("three of a kind"))
+      end
+    end
+
+    require "spec_helper"
+    # include CompareCards
+
+    # describe(CompareCards) do
+    describe("#sorted_values") do
+      it("returns the card values sorted by count (higher count in front)") do
+        card1 = Card.create(value: "2", suit: "s")
+        card2 = Card.create(value: "3", suit: "s")
+        card3 = Card.create(value: "2", suit: "d")
+        card4 = Card.create(value: "3", suit: "d")
+        card5 = Card.create(value: "2", suit: "h")
+
+        test_hand = [card1, card2, card3, card4, card5]
+        expect(test_hand.sorted_values).to(eq([2,2,2,3,3]))
+      end
+
+      it("sorts the non-repeated values by value (higher value in front)") do
+        card1 = Card.create(value: "2", suit: "s")
+        card2 = Card.create(value: "a", suit: "s")
+        card3 = Card.create(value: "2", suit: "d")
+        card4 = Card.create(value: "j", suit: "d")
+        card5 = Card.create(value: "k", suit: "h")
+
+        test_hand = [card1, card2, card3, card4, card5]
+        expect(test_hand.sorted_values).to(eq([2,2,14,13,11]))
+      end
+    end
+    describe("#compare_same_type") do
+      it("returns the better full house") do
+        card1 = Card.create(value: "2", suit: "s")
+        card2 = Card.create(value: "2", suit: "d")
+        card3 = Card.create(value: "2", suit: "h")
+        card4 = Card.create(value: "a", suit: "s")
+        card5 = Card.create(value: "a", suit: "d")
+        card6 = Card.create(value: "3", suit: "s")
+        card7 = Card.create(value: "3", suit: "d")
+        card8 = Card.create(value: "3", suit: "h")
+        card9 = Card.create(value: "4", suit: "s")
+        card10 = Card.create(value: "4", suit: "d")
+
+        test_hand1 = [card1, card2, card3, card4, card5]
+        test_hand2 = [card6, card7, card8, card9, card10]
+        expect(test_hand1.compare_same_type(test_hand2)).to(eq(test_hand2))
+      end
+
+      it("returns the high card") do
+        card1 = Card.create(value: "a", suit: "s")
+        card2 = Card.create(value: "3", suit: "d")
+        card3 = Card.create(value: "4", suit: "h")
+        card4 = Card.create(value: "5", suit: "s")
+        card5 = Card.create(value: "7", suit: "d")
+        card6 = Card.create(value: "8", suit: "s")
+        card7 = Card.create(value: "9", suit: "d")
+        card8 = Card.create(value: "j", suit: "h")
+        card9 = Card.create(value: "k", suit: "s")
+        card10 = Card.create(value: "a", suit: "d")
+
+        test_hand1 = [card1, card2, card3, card4, card5]
+        test_hand2 = [card6, card7, card8, card9, card10]
+        expect(test_hand1.compare_same_type(test_hand2)).to(eq(test_hand2))
+      end
+
+      it('returns the better two pair') do
+        card1 = Card.create(value: "3", suit: "s")
+        card2 = Card.create(value: "3", suit: "d")
+        card3 = Card.create(value: "4", suit: "h")
+        card4 = Card.create(value: "4", suit: "s")
+        card5 = Card.create(value: "7", suit: "d")
+        card6 = Card.create(value: "8", suit: "s")
+        card7 = Card.create(value: "8", suit: "d")
+        card8 = Card.create(value: "4", suit: "d")
+        card9 = Card.create(value: "4", suit: "c")
+        card10 = Card.create(value: "a", suit: "d")
+
+        test_hand1 = [card1, card2, card3, card4, card5]
+        test_hand2 = [card6, card7, card8, card9, card10]
+        expect(test_hand1.compare_same_type(test_hand2)).to(eq(test_hand2))
+      end
+
+      it('returns the better three of a kind hand') do
+        card1 = Card.create(value: "k", suit: "s")
+        card2 = Card.create(value: "k", suit: "d")
+        card3 = Card.create(value: "k", suit: "h")
+        card4 = Card.create(value: "4", suit: "s")
+        card5 = Card.create(value: "7", suit: "d")
+        card6 = Card.create(value: "k", suit: "s")
+        card7 = Card.create(value: "k", suit: "d")
+        card8 = Card.create(value: "k", suit: "h")
+        card9 = Card.create(value: "4", suit: "c")
+        card10 = Card.create(value: "a", suit: "d")
+
+        test_hand1 = [card1, card2, card3, card4, card5]
+        test_hand2 = [card6, card7, card8, card9, card10]
+        expect(test_hand1.compare_same_type(test_hand2)).to(eq(test_hand2))
+      end
+
+      it('returns the better pair hand') do
+        card1 = Card.create(value: "j", suit: "s")
+        card2 = Card.create(value: "k", suit: "d")
+        card3 = Card.create(value: "j", suit: "h")
+        card4 = Card.create(value: "4", suit: "s")
+        card5 = Card.create(value: "7", suit: "d")
+        card6 = Card.create(value: "q", suit: "s")
+        card7 = Card.create(value: "5", suit: "d")
+        card8 = Card.create(value: "6", suit: "h")
+        card9 = Card.create(value: "a", suit: "c")
+        card10 = Card.create(value: "q", suit: "d")
+
+        test_hand1 = [card1, card2, card3, card4, card5]
+        test_hand2 = [card6, card7, card8, card9, card10]
+        expect(test_hand1.compare_same_type(test_hand2)).to(eq(test_hand2))
+      end
+
+      it('returns the better high card hand') do
+        card1 = Card.create(value: "j", suit: "s")
+        card2 = Card.create(value: "a", suit: "d")
+        card3 = Card.create(value: "q", suit: "h")
+        card4 = Card.create(value: "4", suit: "s")
+        card5 = Card.create(value: "7", suit: "d")
+        card6 = Card.create(value: "j", suit: "d")
+        card7 = Card.create(value: "q", suit: "d")
+        card8 = Card.create(value: "a", suit: "h")
+        card9 = Card.create(value: "7", suit: "c")
+        card10 = Card.create(value: "2", suit: "d")
+
+        test_hand1 = [card1, card2, card3, card4, card5]
+        test_hand2 = [card6, card7, card8, card9, card10]
+        expect(test_hand1.compare_same_type(test_hand2)).to(eq(test_hand1))
+      end
+
+      it('returns the better straight') do
+        card1 = Card.create(value: "2", suit: "s")
+        card2 = Card.create(value: "3", suit: "d")
+        card3 = Card.create(value: "4", suit: "h")
+        card4 = Card.create(value: "5", suit: "s")
+        card5 = Card.create(value: "6", suit: "d")
+        card6 = Card.create(value: "8", suit: "s")
+        card7 = Card.create(value: "9", suit: "d")
+        card8 = Card.create(value: "10", suit: "d")
+        card9 = Card.create(value: "j", suit: "c")
+        card10 = Card.create(value: "q", suit: "d")
+
+        test_hand1 = [card1, card2, card3, card4, card5]
+        test_hand2 = [card6, card7, card8, card9, card10]
+        expect(test_hand1.compare_same_type(test_hand2)).to(eq(test_hand2))
+      end
+
+      it('works for the special case of a wheel (A2345)') do
+        card1 = Card.create(value: "A", suit: "s")
+        card2 = Card.create(value: "2", suit: "d")
+        card3 = Card.create(value: "3", suit: "h")
+        card4 = Card.create(value: "4", suit: "s")
+        card5 = Card.create(value: "5", suit: "d")
+        card6 = Card.create(value: "2", suit: "s")
+        card7 = Card.create(value: "3", suit: "d")
+        card8 = Card.create(value: "4", suit: "d")
+        card9 = Card.create(value: "5", suit: "c")
+        card10 = Card.create(value: "6", suit: "d")
+
+        test_hand1 = [card1, card2, card3, card4, card5]
+        test_hand2 = [card6, card7, card8, card9, card10]
+        expect(test_hand1.compare_same_type(test_hand2)).to(eq(test_hand2))
+      end
+
+      it('returns the better flush') do
+        card1 = Card.create(value: "a", suit: "s")
+        card2 = Card.create(value: "2", suit: "s")
+        card3 = Card.create(value: "3", suit: "s")
+        card4 = Card.create(value: "10", suit: "s")
+        card5 = Card.create(value: "j", suit: "s")
+        card6 = Card.create(value: "a", suit: "d")
+        card7 = Card.create(value: "3", suit: "d")
+        card8 = Card.create(value: "2", suit: "d")
+        card9 = Card.create(value: "9", suit: "d")
+        card10 = Card.create(value: "j", suit: "d")
+
+        test_hand1 = [card1, card2, card3, card4, card5]
+        test_hand2 = [card6, card7, card8, card9, card10]
+        expect(test_hand1.compare_same_type(test_hand2)).to(eq(test_hand1))
       end
     end
 end
