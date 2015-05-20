@@ -115,19 +115,12 @@ class Hand < ActiveRecord::Base
 
   def change_round
     game = Game.find(self.game_id)
-<<<<<<< HEAD
+
     game.players[0].update(choice: "new round")
     game.players[1].update(choice: "new round")
     if self.current_round == "preflop"
       self.flop_deal
       self.update(current_round: "flop")
-=======
-    game.players[0].choice = "new round"
-    game.players[1].choice = "new round"
-    if self.current_round == "preflop"
-      self.flop_deal
-      self.current_round == "flop"
->>>>>>> 0bed934f648deac398b3c5e5cdcca35dfdd3bd37
     elsif self.current_round == 'flop'
       self.turn_deal
       self.current_round = 'turn'
