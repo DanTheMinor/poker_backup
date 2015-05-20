@@ -88,7 +88,11 @@ class Hand < ActiveRecord::Base
   def current_choices(player, other_player) #returns an array of the current players choices
     #depedning on round,
     #the player is whoever your displaying choices for
-    if self.current_round == 'preflop'
+    if is_all_in?
+      self.deal_remaining
+      self.winner
+      return [] #no buttons as no choices are available
+    elsif self.current_round == 'preflop'
       if player.is_bb == true
         if other_player.choice == 'call'
           return ["check", "bet/raise"]
@@ -127,14 +131,12 @@ class Hand < ActiveRecord::Base
     end
   end
 
-  def is_all_in
+  def is_all_in?
     game = Game.find(self.game_id)
     player1 = game.players[0]
     player2 = game.players[1]
     if player1.choice == 'call' && player2.choice == 'raise' || player1.choice == 'raise' && player2.choice == 'call'
       if player1.stack == 0 || player2.stack == 0
-        self.deal_remaining
-        self.winner
         return true
       end
     end
@@ -154,8 +156,17 @@ class Hand < ActiveRecord::Base
     end
   end
 
-  def special_bet
-
+  def special_bet(bet_choice, player)
+    #DO NOT CALL THIS METHOD IF THE PLAYER INOUT AMOUNT MANUALLY
+    bet = 0
+    if bet_choice == 'half pot'
+      bet = (self.pot / 2)
+    elsif bet_choice == 'pot'
+      bet = self.pot
+    else #CHOICE WAS ALL IN
+      bet = player.stack()
+    end
+    return bet
   end
 
 

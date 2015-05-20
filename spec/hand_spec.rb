@@ -140,6 +140,29 @@ describe(Hand) do
       hand.cards.create(value: "2", suit: "h")
       expect(hand.winner).to(eq('tie'))
     end
+
+    it('will end the game and process a winner if either player is all-in') do
+      #This test is specifically for testing an all in
+      #Player's hole cards and the community cards need to be populated manually (otherwise cards are random)
+      game = Game.create
+      player1 = game.players.create(name: "peter", choice: "call", is_bb: false, stack: 0)
+      player2 = game.players.create(name: "ben", choice: "raise", is_bb: true, stack: 100)
+      hand = game.hands.create(pot: 500, current_round: "river")
+      #Populate player cards and community cards
+      player1.cards.create(value: "7", suit: "s")
+      player1.cards.create(value: "2", suit: "c")
+      player2.cards.create(value: "a", suit: "c")
+      player2.cards.create(value: "a", suit: "d")
+      hand.cards.create(value: "a", suit: "s")
+      hand.cards.create(value: "a", suit: "h")
+      hand.cards.create(value: "k", suit: "h")
+      hand.cards.create(value: "k", suit: "d")
+      hand.cards.create(value: "k", suit: "s")
+      game.deal(player2)
+      #
+      expect(hand.current_choices(player1, player2)).to(eq([]))
+      expect(game.players[1].stack).to(eq(600))
+    end
   end
 
   describe('#deal_remaining') do
@@ -151,14 +174,27 @@ describe(Hand) do
     end
   end
 
-  describe('#is_all_in') do
+  describe('#is_all_in?') do
     it('will return true if either player is all-in') do
       game = Game.create
       player1 = game.players.create(name: "peter", choice: "call", is_bb: false, stack: 0) #stack: 500
       player2 = game.players.create(name: "ben", choice: "raise", is_bb: true)
       hand = game.hands.create(pot: 0, current_round: "preflop")
-      expect(hand.is_all_in).to(eq(true))
+      expect(hand.is_all_in?).to(eq(true))
     end
   end
 
+  describe('#special_bet') do
+    it('will return the fixnum value of a special bet') do
+      game = Game.create
+      player1 = game.players.create(name: "peter", stack: 100) #stack: 500
+      hand = game.hands.create(pot: 101)
+      expect(hand.special_bet("all in pawtneh", player1)).to(eq(100))
+      expect(hand.special_bet("half pot", player1)).to(eq(50))
+      expect(player1.stack()).to(eq(100))
+      expect(hand.special_bet("pot", player1)).to(eq(101))
+      expect(player1.bet(hand.special_bet("half pot", player1))).to(eq(50))
+      expect(player1.stack()).to(eq(50))
+    end
+  end
 end
