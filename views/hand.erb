@@ -41,11 +41,14 @@
 
 <strong><hr></strong>
 
-<div class="row">
-</div>
-
-<strong><hr></strong>
-
+<% if @game.current_hand.cards.any? %>
+  <div class="row">
+    <% @game.current_hand.cards.each do |board_card| %>
+      <img src="/images/resources/<%= board_card.url %>" />
+    <% end %>
+  </div>
+  <strong><hr></strong>
+<% end %>
 
 <div class= "row">
   <div class= "col-md-5">

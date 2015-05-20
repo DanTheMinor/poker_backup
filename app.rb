@@ -29,9 +29,7 @@ end
 
 get "/game/:id/preflop" do |id|
   @game = Game.find(id)
-  @game.players.each do |player|
-    @game.deal(player)
-  end
+  @game.new_hand
   @player1 = @game.players[0]
   @player2 = @game.players[1]
   erb(:hand)
