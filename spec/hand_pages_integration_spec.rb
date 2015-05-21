@@ -96,7 +96,7 @@ describe("two player flop round, bb check - sb check", type: :feature) do
 end
 
 describe("two player flop round, bb raise - sb raise", type: :feature) do
-  it("players will cycle through flop round then move to turn") do
+  it("players will cycle through turn round then move to river") do
     game = Game.create(name: 'showdown')
     game.players.create(name: 'ben', stack: 200)
     game.players.create(name: 'peter', stack: 200)
@@ -116,5 +116,25 @@ describe("two player flop round, bb raise - sb raise", type: :feature) do
     click_button "check"
     hand = game.hands[0]
     expect(hand.cards.length).to(eq(5))
+  end
+end
+
+describe("two player river round, bb check - sb check", type: :feature) do
+  it("players will cycle through river round then move to find winner") do
+    game = Game.create(name: 'showdown')
+    game.players.create(name: 'ben', stack: 200)
+    game.players.create(name: 'peter', stack: 200)
+    visit "/game/#{game.id}"
+    click_link "Deal first hand"
+    click_button "call"
+    click_button "check"
+    click_button "check"
+    click_button "check"
+    click_button "check"
+    click_button "check"
+    click_button "check"
+    click_button "check"
+    hand = game.hands[0]
+    expect(game.current_hand.winner_id).to be > 0
   end
 end
