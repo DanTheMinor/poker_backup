@@ -131,7 +131,6 @@ class Hand < ActiveRecord::Base
       game.players[0].update(choice: "new round")
       game.players[1].update(choice: "new round")
     end
-    binding.pry
     if self.current_round == "preflop"
       self.flop_deal
       self.update(current_round: "flop")
@@ -179,7 +178,6 @@ class Hand < ActiveRecord::Base
       self.turn_deal
       self.river_deal
     elsif self.current_round == "flop"
-      binding.pry
       self.turn_deal
       self.river_deal
     elsif self.current_round == 'turn'
