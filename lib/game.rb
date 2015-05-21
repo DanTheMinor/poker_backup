@@ -7,7 +7,9 @@ class Game < ActiveRecord::Base
   @@values = [ "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k", "a"]
 
   def populate_deck
-    Card.all.destroy()
+    Card.all().each() do |card|
+      card.destroy()
+    end
     @@suits.each do |suit|
       @@values.each do |value|
         Card.create(suit: suit, value: value, url: suit + value + ".png")  #populate cards database
@@ -27,14 +29,18 @@ class Game < ActiveRecord::Base
   end
 
   def new_hand
-    hands.create(pot: 0, current_round: "preflop")
+    hands.create(pot: 0, current_round: "preflop", last_bet: 1)
     hand_count = hands.length
     if hand_count % 2 == 0
       players[0].update(is_bb: true, choice: "new round", is_turn: false)
+      players[0].update_chips(2)
       players[1].update(is_bb: false, choice: "new round", is_turn: true)
+      players[1].update_chips(1)
     else
       players[1].update(is_bb: true, choice: "new round", is_turn: false)
+      players[1].update_chips(2)
       players[0].update(is_bb: false, choice: "new round", is_turn: true)
+      players[0].update_chips(1)
     end
     Card.update_all(player_id: nil, hand_id: nil)
     players.each {|player| deal(player)}

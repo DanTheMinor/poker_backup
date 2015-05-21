@@ -1,7 +1,10 @@
-
+<div class="row">
+  <p>Round <%= @game.current_hand.current_round %></p>
+  <p>Pot <%= @game.current_hand.pot %> </p>
+</div>
 <div class="row">
   <div class= "col-md-5">
-    <h3><%= @player1.name%> </h3>
+    <h3><%= @player1.name%> : stack <%= @player1.stack %></h3>
     <img class="face_up" src="/images/resources/<%= @player1.cards[0].url%>" />
     <img class="face_up" src="/images/resources/<%= @player1.cards[1].url%>" />
 
@@ -11,7 +14,7 @@
     <br><br>
     <br>
 
-    <% if @player1.is_turn %>
+    <% if @player1.is_turn && !@game.current_hand.is_over?%>
       <% if @player2.choice == "bet/raise" %>
         <h3><%= @player2.name %> bet/raises <%= @game.current_hand.last_bet %></h3>
       <% end %>
@@ -49,14 +52,14 @@
 
 <div class= "row">
   <div class= "col-md-5">
-    <h3> <%=@player2.name %> </h3>
+    <h3> <%=@player2.name %> : stack <%= @player2.stack %></h3>
     <img class="face_up" src="/images/resources/<%= @player2.cards[0].url%>" />
     <img class="face_up" src="/images/resources/<%= @player2.cards[1].url%>" />
   </div>
   <div class= "col-md-6">
     <br><br>
 
-    <% if @player2.is_turn %>
+    <% if @player2.is_turn && !@game.current_hand.is_over? %>
       <% if @player1.choice == "bet/raise" %>
         <h3><%= @player1.name %> bet/raises <%= @game.current_hand.last_bet %></h3>
       <% end %>
@@ -80,6 +83,18 @@
 
   </div>
 
+</div>
+
+<div class="row">
+  <% if @game.current_hand.is_over? %>
+    <% if @game.current_hand.is_tie? %>
+      <h1>The game is a tie.</h1>
+    <% else %>
+      <h1> <%= @game.current_hand.winning_player.name %> wins the pot</h1>
+    <% end %>
+    <a href="/game/<%=@game.id %>/preflop" type="button" class="btn btn-success">New hand</a>
+    <a href="/" type="button" class="btn btn-warning">New game</a>
+  <% end %>
 </div>
 
 

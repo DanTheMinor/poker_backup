@@ -55,9 +55,10 @@ post "/game/:id/:choice" do |id, choice|
 
   #handle betting to update stacks
   if choice == "bet"
+    current_player.update(choice: current_player.choice + "/raise")
     amount = params.fetch("amount").to_i
     current_player.update_chips(amount)
-    game.current_hand.update(last_amount: amount)
+    game.current_hand.update(last_bet: amount)
   elsif choice == "call"
     amount_called = game.current_hand.last_bet.to_i
     current_player.update_chips(amount_called)
