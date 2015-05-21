@@ -2,18 +2,6 @@ class Hand < ActiveRecord::Base
   has_many :cards
   belongs_to :game
 
-
-  # def part_of_initialize --This is meant to be built into intialize method
-  #   if game_id == even
-  #     player1 = big blind
-  #     player2 = small blind
-  #   else
-  #     player1 = small blind
-  #     player2 = big blind
-  #   end
-  # end
-
-
   def flop_deal
     first_card = Card.where(player_id: nil).sample
     self.cards << first_card
@@ -98,12 +86,10 @@ class Hand < ActiveRecord::Base
     end
   end
 
-  def current_choices(player, other_player) #returns an array of the current players choices
-    #depedning on round,
-    #the player is whoever your displaying choices for
+  def current_choices(player, other_player)
+
     if self.all_in_called?
-#removed winner conditions
-      return [] #no buttons as no choices are available
+      return []
     elsif self.current_round == 'preflop'
       if player.is_bb == true
         if other_player.choice == 'call'
@@ -119,7 +105,7 @@ class Hand < ActiveRecord::Base
         return ["check", "bet"]
       elsif other_player.choice == "check" && player.is_bb == false
         return ["check", "bet"]
-      else #other_player.choice == 'raise' or
+      else
         return ["call", "fold", "raise"]
       end
     end
@@ -182,8 +168,6 @@ class Hand < ActiveRecord::Base
       self.river_deal
     elsif self.current_round == 'turn'
       self.river_deal
-    else
-      #do nothing
     end
   end
 

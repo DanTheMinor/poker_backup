@@ -1,6 +1,21 @@
+
+
+
+body {
+  background-image: url("/img/background.jpg");
+
+}
+
+
+
+img.dog_poker{
+  width: 600px;
+}
 img.face_up {
   height: 200px;
 }
+
+
 
 img.face_down {
   height: 225px;
