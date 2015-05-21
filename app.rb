@@ -49,7 +49,6 @@ post "/game/:id/:choice" do |id, choice|
   game = Game.find(id)
   current_player = game.current_player
 
-  #update current_player choice
   unless choice == "fold" || choice == "check"
     amount = params["amount"].to_i
     current_player.update_amounts(choice, amount)
@@ -60,6 +59,3 @@ post "/game/:id/:choice" do |id, choice|
   game.current_hand.handle_choice(current_player, other_player)
   redirect "/game/#{id}/hand"
 end
-
-
-# current_player.update_chips(choice, amount)
