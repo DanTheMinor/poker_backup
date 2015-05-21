@@ -54,8 +54,7 @@ post "/game/:id/:choice" do |id, choice|
   current_player.update(choice: choice)
 
   #handle betting to update stacks
-  if choice == "bet"
-    current_player.update(choice: current_player.choice + "/raise")
+  if choice == "bet" || choice == "raise"
     amount = params.fetch("amount").to_i
     amount = current_player.update_chips(amount) #we changed this to only
     #raise the amount of chips they have

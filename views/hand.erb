@@ -33,11 +33,18 @@
       <% end %>
       <!-- display options -->
       <% @game.current_hand.current_choices(@player1, @player2).each do |choice| %>
-        <% if choice == "bet/raise" %>
+        <% if choice == "raise" %>
           <h1>Amount</h1>
           <form action="/game/<%=@game.id %>/bet" method="post">
             <input type="text" name="amount" >
-            <button class="btn btn-success" type="submit"> Bet/Raise </Button>
+            <button class="btn btn-success" type="submit"> Raise </Button>
+          </form>
+          <br>
+        <% elsif choice == "bet" %>
+          <h1>Amount</h1>
+          <form action="/game/<%=@game.id %>/bet" method="post">
+            <input type="text" name="amount" >
+            <button class="btn btn-success" type="submit"> Bet </Button>
           </form>
           <br>
         <% else %>
@@ -93,11 +100,18 @@
       <% end %>
       <!-- display options -->
       <% @game.current_hand.current_choices(@player2, @player1).each do |choice| %>
-        <% if choice == "bet/raise" %>
-          <h4>Amount</h4>
+      <% if choice == "raise" %>
+        <h1>Amount</h1>
           <form action="/game/<%=@game.id %>/bet" method="post">
             <input type="text" name="amount" >
-            <button class="btn btn-success" type="submit"> Bet/Raise </Button>
+            <button class="btn btn-success" type="submit"> Raise </Button>
+          </form>
+          <br>
+        <% elsif choice == "bet" %>
+          <h1>Amount</h1>
+          <form action="/game/<%=@game.id %>/bet" method="post">
+            <input type="text" name="amount" >
+            <button class="btn btn-success" type="submit"> Bet </Button>
           </form>
           <br>
         <% else %>

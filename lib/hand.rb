@@ -107,20 +107,20 @@ class Hand < ActiveRecord::Base
     elsif self.current_round == 'preflop'
       if player.is_bb == true
         if other_player.choice == 'call'
-          return ["check", "bet/raise"]
+          return ["check", "raise"]
         else
-          return ["call", "fold", "bet/raise"]
+          return ["call", "fold", "raise"]
         end
       else
-        return ["call", "fold", "bet/raise"]
+        return ["call", "fold", "raise"]
       end
     else
       if other_player.choice == "new round"
-        return ["check", "bet/raise"]
+        return ["check", "bet"]
       elsif other_player.choice == "check" && player.is_bb == false
-        return ["check", "bet/raise"]
-      else
-        return ["call", "fold", "bet/raise"]
+        return ["check", "bet"]
+      else #other_player.choice == 'raise' or
+        return ["call", "fold", "raise"]
       end
     end
   end

@@ -85,7 +85,7 @@ describe(Hand) do
       player1 = game.players.create(name: "peter", choice: "call", is_bb: false) #stack: 500
       player2 = game.players.create(name: "ben", is_bb: true)
       hand = game.hands.create(pot: 0, current_round: "preflop")
-      expect(hand.current_choices(player2, player1)).to(eq(['check', 'bet/raise']))
+      expect(hand.current_choices(player2, player1)).to(eq(['check', 'raise']))
     end
 
     it('tells app what buttons to display based on player choices and round/hand') do
@@ -93,35 +93,35 @@ describe(Hand) do
       player1 = game.players.create(name: "peter", choice: "raise", is_bb: true) #stack: 500
       player2 = game.players.create(name: "ben", choice: "call", is_bb: false)
       hand = game.hands.create(pot: 0, current_round: "preflop")
-      expect(hand.current_choices(player2, player1)).to(eq(['call', 'fold', 'bet/raise']))
+      expect(hand.current_choices(player2, player1)).to(eq(['call', 'fold', 'raise']))
     end
     it('tells app what buttons to display based on player choices and round/hand') do
       game = Game.create
       player1 = game.players.create(name: "peter", choice: "new round", is_bb: false) #stack: 500
       player2 = game.players.create(name: "ben", choice: "new round", is_bb: true)
       hand = game.hands.create(pot: 0, current_round: "flop")
-      expect(hand.current_choices(player2, player1)).to(eq(['check', 'bet/raise']))
+      expect(hand.current_choices(player2, player1)).to(eq(['check', 'bet']))
     end
     it('tells app what buttons to display based on player choices and round/hand') do
       game = Game.create
       player1 = game.players.create(name: "peter", choice: "new round", is_bb: false) #stack: 500
       player2 = game.players.create(name: "ben", choice: "new round", is_bb: true)
       hand = game.hands.create(pot: 0, current_round: "flop")
-      expect(hand.current_choices(player2, player1)).to(eq(['check', 'bet/raise']))
+      expect(hand.current_choices(player2, player1)).to(eq(['check', 'bet']))
     end
     it('tells app what buttons to display based on player choices and round/hand') do
       game = Game.create
       player1 = game.players.create(name: "peter", choice: "new round", is_bb: false) #stack: 500
       player2 = game.players.create(name: "ben", choice: "raise", is_bb: true)
       hand = game.hands.create(pot: 0, current_round: "flop")
-      expect(hand.current_choices(player1, player2)).to(eq(['call', 'fold', 'bet/raise']))
+      expect(hand.current_choices(player1, player2)).to(eq(['call', 'fold', 'raise']))
     end
     it('tells app what buttons to display based on player choices and round/hand') do
       game = Game.create
       player1 = game.players.create(name: "peter", choice: "raise", is_bb: false) #stack: 500
       player2 = game.players.create(name: "ben", choice: "raise", is_bb: true)
       hand = game.hands.create(pot: 0, current_round: "flop")
-      expect(hand.current_choices(player2, player1)).to(eq(['call', 'fold', 'bet/raise']))
+      expect(hand.current_choices(player2, player1)).to(eq(['call', 'fold', 'raise']))
     end
 
     it('will end the game and process a winner if either player is all-in') do
