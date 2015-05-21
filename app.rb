@@ -64,9 +64,8 @@ post "/game/:id/:choice" do |id, choice|
     amount_called = game.current_hand.last_bet.to_i
     current_player.update_chips(amount_called)
   end
-
   other_player = game.other_player
-  game.current_hand.handle_choice(current_player, other_player)
 
+  game.current_hand.handle_choice(current_player, other_player)
   redirect "/game/#{id}/hand"
 end

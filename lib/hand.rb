@@ -72,7 +72,10 @@ class Hand < ActiveRecord::Base
       player.update(is_turn: false)
       other_player.update(is_turn: true)
     end
-    if player.choice == 'call'
+    if player.choice == 'call' && other_player.stack == 0
+      self.deal_remaining
+      self.winner
+    elsif player.choice == 'call'
       if current_round != 'preflop'
         change_round()
       elsif player.is_bb == true
@@ -98,10 +101,8 @@ class Hand < ActiveRecord::Base
   def current_choices(player, other_player) #returns an array of the current players choices
     #depedning on round,
     #the player is whoever your displaying choices for
-    binding.pry
     if self.is_all_in?
-      self.deal_remaining
-      self.winner
+#removed winner conditions
       return [] #no buttons as no choices are available
     elsif self.current_round == 'preflop'
       if player.is_bb == true
@@ -126,9 +127,11 @@ class Hand < ActiveRecord::Base
 
   def change_round
     game = Game.find(self.game_id)
-
-    game.players[0].update(choice: "new round")
-    game.players[1].update(choice: "new round")
+    unless is_all_in?
+      game.players[0].update(choice: "new round")
+      game.players[1].update(choice: "new round")
+    end
+    binding.pry
     if self.current_round == "preflop"
       self.flop_deal
       self.update(current_round: "flop")
@@ -164,9 +167,8 @@ class Hand < ActiveRecord::Base
     game = Game.find(self.game_id)
     player1 = game.players[0]
     player2 = game.players[1]
-    if player1.stack == 0 player2.choice == 'call'|| player2.stack == 0 && player1.choice == 'call'
+    if player1.stack == 0 && player2.choice == 'call'|| player2.stack == 0 && player1.choice == 'call'
       return true
-    end
     end
     return false
   end
@@ -177,6 +179,7 @@ class Hand < ActiveRecord::Base
       self.turn_deal
       self.river_deal
     elsif self.current_round == "flop"
+      binding.pry
       self.turn_deal
       self.river_deal
     elsif self.current_round == 'turn'
