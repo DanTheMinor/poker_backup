@@ -75,3 +75,22 @@ describe("two player pre-flop round, SB bet/raise - BB bet/raise", type: :featur
     expect(hand.cards.length).to(eq(3))
   end
 end
+
+describe("two player flop round, SB bet/raise - BB bet/raise", type: :feature) do
+  it("players will cycle through flop round then move to turn") do
+    game = Game.create(name: 'showdown')
+    game.players.create(name: 'ben', stack: 200)
+    game.players.create(name: 'peter', stack: 200)
+    visit "/game/#{game.id}"
+    click_link "Deal first hand"
+    fill_in "amount", :with => "2"
+    click_button "Bet/Raise"
+    fill_in "amount", :with => "2"
+    click_button "Bet/Raise"
+    click_button "call"
+    click_button "check"
+    click_button "check"
+    hand = game.hands[0]
+    expect(hand.cards.length).to(eq(4))
+  end
+end
