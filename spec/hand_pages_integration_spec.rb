@@ -203,3 +203,21 @@ describe("two player, bb fold", type: :feature) do
     expect(game.current_hand.winner_id).to be > 0
   end
 end
+
+
+describe("two player, sb fold", type: :feature) do
+  it("test small blind fold at flop") do
+    game = Game.create(name: 'showdown')
+    game.players.create(name: 'ben', stack: 200)
+    game.players.create(name: 'peter', stack: 200)
+    visit "/game/#{game.id}"
+    click_link "Deal first hand"
+    #start pre-flop
+    click_button "call"
+    click_button "check"
+    fill_in "amount", :with => "2"
+    click_button "Bet/Raise"
+    click_button "fold"
+    expect(game.current_hand.winner_id).to be > 0
+  end
+end
