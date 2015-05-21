@@ -1,15 +1,19 @@
 class Game < ActiveRecord::Base
   has_many :players
   has_many :hands
+  after_save(:clear_tables)
   after_save(:populate_deck)
 
   @@suits = ["s","c","d","h"]
   @@values = [ "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k", "a"]
 
+  def clear_tables
+    Card.delete_all
+    Player.delete_all
+    Hand.delete_all
+  end
+
   def populate_deck
-    Card.all().each() do |card|
-      card.destroy()
-    end
     @@suits.each do |suit|
       @@values.each do |value|
         Card.create(suit: suit, value: value, url: suit + value + ".png")  #populate cards database

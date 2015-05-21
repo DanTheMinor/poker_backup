@@ -28,14 +28,18 @@
     <br><br>
     <br>
     <% if @player1.is_turn && !@game.current_hand.is_over?%>
-      <% if @player2.choice == "bet/raise" %>
-        <h4><%= @player2.name %> bet/raises <%= @game.current_hand.last_bet %></h4>
+      <% if @player2.choice == "bet" || @player2.choice == "raise" %>
+        <h4><%= @player2.name %> <%= @player2.choice%>s <%= @game.current_hand.last_bet %></h4>
+      <% elsif @player2.choice == "call" %>
+        <h4><%= @player2.name %> calls <%= @game.current_hand.last_bet %></h4>
+      <% elsif @player2.choice == "check" %>
+        <h4><%= @player2.name %> checks</h4>
       <% end %>
       <!-- display options -->
       <% @game.current_hand.current_choices(@player1, @player2).each do |choice| %>
         <% if choice == "raise" %>
           <h1>Amount</h1>
-          <form action="/game/<%=@game.id %>/bet" method="post">
+          <form action="/game/<%=@game.id %>/raise" method="post">
             <input type="text" name="amount" >
             <button class="btn btn-success" type="submit"> Raise </Button>
           </form>
@@ -95,14 +99,18 @@
   <div class= "col-md-6">
     <br><br>
     <% if @player2.is_turn && !@game.current_hand.is_over? %>
-      <% if @player1.choice == "bet/raise" %>
-        <h4><%= @player1.name %> bet/raises <%= @game.current_hand.last_bet %></h4>
+      <% if @player1.choice == "bet" || @player1.choice == "raise" %>
+        <h4><%= @player1.name %> <%= @player1.choice%>s <%= @game.current_hand.last_bet %></h4>
+      <% elsif @player1.choice == "call" %>
+        <h4><%= @player1.name %> calls <%= @game.current_hand.last_bet %></h4>
+      <% elsif @player1.choice == "check" %>
+        <h4><%= @player1.name %> checks</h4>
       <% end %>
       <!-- display options -->
       <% @game.current_hand.current_choices(@player2, @player1).each do |choice| %>
       <% if choice == "raise" %>
         <h1>Amount</h1>
-          <form action="/game/<%=@game.id %>/bet" method="post">
+          <form action="/game/<%=@game.id %>/raise" method="post">
             <input type="text" name="amount" >
             <button class="btn btn-success" type="submit"> Raise </Button>
           </form>
@@ -132,6 +140,10 @@
     <% if @game.current_hand.is_tie? %>
       <h1>The game is a tie.</h1>
     <% else %>
+      <% @temp = Player.where(choice: 'fold').first%>
+      <% if @temp != nil %>
+        <h2> <%= @temp.name %> folds</h2>
+      <% end %>
       <h1> <%= @game.current_hand.winning_player.name %> wins the pot</h1>
     <% end %>
     <a href="/game/<%=@game.id %>/preflop" type="button" class="btn btn-success">New hand</a>
