@@ -1,7 +1,7 @@
 
 <div class="row">
   <div class= "col-md-5">
-    <h3><%= @player1.name%> </h3>
+    <h3><%= @player1.name%> <%=@player1.stack %></h3>
     <img class="face_up" src="/images/resources/<%= @player1.cards[0].url%>" />
     <img class="face_up" src="/images/resources/<%= @player1.cards[1].url%>" />
 
@@ -11,14 +11,15 @@
     <br><br>
     <br>
 
+
     <% if @player1.is_turn %>
       <% if @player2.choice == "bet/raise" %>
-        <h3><%= @player2.name %> bet/raises <%= @game.current_hand.last_bet %></h3>
+        <h4><%= @player2.name %> bet/raises <%= @game.current_hand.last_bet %></h4>
       <% end %>
       <!-- display options -->
-      <% @game.current_hand.current_choices(@player1, @player2).each do |choice| %>
+      <!-- <% @game.current_hand.current_choices(@player1, @player2).each do |choice| %>
         <% if choice == "bet/raise" %>
-          <p>Amount</p>
+          <h1>Amount</h1>
           <form action="/game/<%=@game.id %>/bet" method="post">
             <input type="text" name="amount" >
             <button class="btn btn-success" type="submit"> Bet/Raise </Button>
@@ -28,7 +29,7 @@
           <form action="/game/<%=@game.id%>/<%=choice%>" method="post">
             <button class = "btn btn-info" type="submit"><%=choice %></button>
           </form>
-        <%end%>
+        <%end%> -->
 
       <% end %>
     <% end %>
@@ -49,7 +50,7 @@
 
 <div class= "row">
   <div class= "col-md-5">
-    <h3> <%=@player2.name %> </h3>
+    <h3> <%=@player2.name %> <%=@player2.stack %></h3>
     <img class="face_up" src="/images/resources/<%= @player2.cards[0].url%>" />
     <img class="face_up" src="/images/resources/<%= @player2.cards[1].url%>" />
   </div>
@@ -58,12 +59,12 @@
 
     <% if @player2.is_turn %>
       <% if @player1.choice == "bet/raise" %>
-        <h3><%= @player1.name %> bet/raises <%= @game.current_hand.last_bet %></h3>
+        <h4><%= @player1.name %> bet/raises <%= @game.current_hand.last_bet %></h4>
       <% end %>
       <!-- display options -->
       <% @game.current_hand.current_choices(@player2, @player1).each do |choice| %>
         <% if choice == "bet/raise" %>
-          <p>Amount</p>
+          <h4>Amount</h4>
           <form action="/game/<%=@game.id %>/bet" method="post">
             <input type="text" name="amount" >
             <button class="btn btn-success" type="submit"> Bet/Raise </Button>

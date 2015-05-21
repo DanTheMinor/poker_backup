@@ -25,6 +25,7 @@ class Player < ActiveRecord::Base
     #update the pot the player belongs to
     pot = self.game.current_hand.pot
     self.game.current_hand.update(pot: pot + add_to_pot)
+    return add_to_pot #return amount the play is actually allowed to bet
   end
 
 end

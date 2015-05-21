@@ -7,7 +7,9 @@ class Game < ActiveRecord::Base
   @@values = [ "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k", "a"]
 
   def populate_deck
-    Card.all.destroy()
+    Card.all().each() do |card|
+      card.destroy()
+    end
     @@suits.each do |suit|
       @@values.each do |value|
         Card.create(suit: suit, value: value, url: suit + value + ".png")  #populate cards database
