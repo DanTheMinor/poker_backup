@@ -2,6 +2,6 @@ img.face_up {
   height: 200px;
 }
 
-img#card_back {
+img.face_down {
   height: 225px;
 }
