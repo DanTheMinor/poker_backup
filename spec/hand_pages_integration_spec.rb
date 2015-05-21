@@ -174,3 +174,17 @@ describe("two player full game, bb raise - sb raise", type: :feature) do
     expect(game.current_hand.winner_id).to be > 0
   end
 end
+
+
+describe("two player, sb fold", type: :feature) do
+  it("players will cycle through full game having a round of raises each time") do
+    game = Game.create(name: 'showdown')
+    game.players.create(name: 'ben', stack: 200)
+    game.players.create(name: 'peter', stack: 200)
+    visit "/game/#{game.id}"
+    click_link "Deal first hand"
+    #start pre-flop
+    click_button "fold"
+    expect(game.current_hand.winner_id).to be > 0
+  end
+end
