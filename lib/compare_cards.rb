@@ -1,8 +1,7 @@
 class Array
 
-  def compare_cards(other_hand)
-
-    [:is_straight_flush,:is_four_kind, :is_full_house,:is_flush,
+    def compare_cards(other_hand)
+      [:is_straight_flush,:is_four_kind, :is_full_house,:is_flush,
       :is_straight, :is_three_kind, :is_two_pair, :is_pair].each do |is_type|
         if self.send(is_type) && other_hand.send(is_type)
           return self.compare_same_type(other_hand)
@@ -13,7 +12,6 @@ class Array
         end
       end
       return self.compare_same_type(other_hand)
-
     end
 
     def select_by_count(n)
