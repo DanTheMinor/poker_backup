@@ -51,12 +51,13 @@ class Hand < ActiveRecord::Base
     player1_hand = best_hand(player1)
     player2_hand = best_hand(player2)
     if player1_hand.compare_cards(player2_hand) == player1_hand
-      player1.stack += self.pot()
+      player1.update(stack: player1.stack + self.pot)
       self.winner_id = player1.id
       return player1
     elsif player1_hand.compare_cards(player2_hand) == player2_hand
       self.winner_id = player2.id
-      player2.stack += self.pot #gives the winner the money in the pot
+      player2.update(stack: player2.stack + self.pot)
+      #gives the winner the money in the pot
       return player2
     else
       return 'tie'
@@ -65,8 +66,10 @@ class Hand < ActiveRecord::Base
 
   def handle_choice(player, other_player) #changes the round based on player's choice
     #the player is whoever made the decision
-    player.update(is_turn: false)
-    other_player.update(is_turn: true)
+    unless player.is_bb && player.choice == 'call' || self.current_round == 'preflop' && player.is_bb
+      player.update(is_turn: false)
+      other_player.update(is_turn: true)
+    end
     if player.choice == 'call'
       if current_round != 'preflop'
           change_round()
@@ -75,11 +78,11 @@ class Hand < ActiveRecord::Base
       end
     elsif player.choice == 'fold'
       self.current_round = 'game over'
-      other_player.stack += self.pot() #gives the winner the money in the pot
+      other_player.update(stack: other_player.stack + self.pot()) #gives the winner the money in the pot
       self.winner_id = other_player.id()
     #there is no need for an if == raise because it will never change the round
     elsif player.choice == 'check'
-      if player.is_bb == false
+      if player.is_bb == false || self.current_round == "preflop"
         change_round()
       end
     end
@@ -128,8 +131,13 @@ class Hand < ActiveRecord::Base
       self.river_deal
       self.current_round = 'river'
     else
+      self.winner
       self.current_round = 'show cards'
     end
+  end
+
+  def is_over?
+    self.winner_id != nil
   end
 
   def is_all_in?
