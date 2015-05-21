@@ -37,7 +37,6 @@ get "/game/:id/hand" do |id|
   @game = Game.find(id)
   @player1 = @game.players[0]
   @player2 = @game.players[1]
-binding.pry
   erb(:hand)
 end
 
@@ -55,7 +54,7 @@ post "/game/:id/:choice" do |id, choice|
   current_player.update(choice: choice)
 
   #handle betting to update stacks
-  if choice == "bet/raise"
+  if choice == "bet"
     amount = params.fetch("amount").to_i
     current_player.update_chips(amount)
     game.current_hand.update(last_amount: amount)

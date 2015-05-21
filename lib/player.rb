@@ -12,7 +12,7 @@ class Player < ActiveRecord::Base
 
   end
 
-  def call(bet) #subtract from player stack bet amount
+  def update_chips(bet) #subtract from player stack bet amount
     #returns amount to add to pot
     add_to_pot = 0
     if self.stack < bet
@@ -25,19 +25,6 @@ class Player < ActiveRecord::Base
     #update the pot the player belongs to
     pot = self.game.current_hand.pot
     self.game.current_hand.update(pot: pot + add_to_pot)
-  end
-
-  def bet(bet) #subtracts from player stack bet amount
-    #returns amount to add to pot
-    add_to_pot = 0
-    if self.stack < bet
-      add_to_pot = self.stack
-      self.stack = 0
-    else
-      add_to_pot = bet
-      self.stack -= bet
-    end
-    add_to_pot
   end
 
 end

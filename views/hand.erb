@@ -19,7 +19,7 @@
       <% @game.current_hand.current_choices(@player1, @player2).each do |choice| %>
         <% if choice == "bet/raise" %>
           <p>Amount</p>
-          <form action="/game/<%=@game.id %>/<%= choice%>" method="post">
+          <form action="/game/<%=@game.id %>/bet" method="post">
             <input type="text" name="amount" >
             <button class="btn btn-success" type="submit"> Bet/Raise </Button>
           </form>
@@ -64,7 +64,7 @@
       <% @game.current_hand.current_choices(@player2, @player1).each do |choice| %>
         <% if choice == "bet/raise" %>
           <p>Amount</p>
-          <form action="/game/<%=@game.id %>/<%= choice%>" method="post">
+          <form action="/game/<%=@game.id %>/bet" method="post">
             <input type="text" name="amount" >
             <button class="btn btn-success" type="submit"> Bet/Raise </Button>
           </form>
