@@ -3,11 +3,14 @@ require 'spec_helper'
 require ('pry')
 
 describe(Player) do
-  describe('#call') do
-    it('Subtracts the amount bet from the calling players stack') do
-      player1 = Player.create(stack: 5)
-      player1.call(2)
-      expect(player1.stack()).to(eq(3))
+  describe('#update_chips') do
+    it('Subtracts the amount bet from the players stack') do
+      game = Game.create
+      player1 = game.players.create(stack: 5)
+      player2 = game.players.create(stack: 10)
+      game.new_hand
+      player1.update_chips(2)
+      expect(player1.stack()).to(eq(2))
     end
   end
 
@@ -23,13 +26,7 @@ describe(Player) do
   #
   #another method for the hand class
   #bet special amount for half pot, full pot, all in
-  describe('#bet') do
-    it('Subtracts the amount bet from the betting player') do
-      player1 = Player.create(stack: 5)
-      player1.bet(2)
-      expect(player1.stack()).to(eq(3))
-    end
-  end
+
 
   describe('#is_bb') do
     game = Game.create()

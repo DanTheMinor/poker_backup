@@ -101,7 +101,7 @@ class Hand < ActiveRecord::Base
   def current_choices(player, other_player) #returns an array of the current players choices
     #depedning on round,
     #the player is whoever your displaying choices for
-    if self.is_all_in?
+    if self.all_in_called?
 #removed winner conditions
       return [] #no buttons as no choices are available
     elsif self.current_round == 'preflop'
@@ -127,7 +127,7 @@ class Hand < ActiveRecord::Base
 
   def change_round
     game = Game.find(self.game_id)
-    unless is_all_in?
+    unless all_in_called?
       game.players[0].update(choice: "new round")
       game.players[1].update(choice: "new round")
     end
@@ -162,7 +162,7 @@ class Hand < ActiveRecord::Base
     Player.find(winner_id)
   end
 
-  def is_all_in?
+  def all_in_called?
     game = Game.find(self.game_id)
     player1 = game.players[0]
     player2 = game.players[1]
