@@ -98,7 +98,6 @@ class Hand < ActiveRecord::Base
   def current_choices(player, other_player) #returns an array of the current players choices
     #depedning on round,
     #the player is whoever your displaying choices for
-    binding.pry
     if self.is_all_in?
       self.deal_remaining
       self.winner
@@ -164,9 +163,8 @@ class Hand < ActiveRecord::Base
     game = Game.find(self.game_id)
     player1 = game.players[0]
     player2 = game.players[1]
-    if player1.stack == 0 player2.choice == 'call'|| player2.stack == 0 && player1.choice == 'call'
+    if player1.stack == 0 && player2.choice == 'call'|| player2.stack == 0 && player1.choice == 'call'
       return true
-    end
     end
     return false
   end

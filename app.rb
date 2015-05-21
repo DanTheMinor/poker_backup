@@ -35,8 +35,8 @@ end
 
 get "/game/:id/hand" do |id|
   @game = Game.find(id)
-  @player1 = @game.players[0]
-  @player2 = @game.players[1]
+  @player1 = @game.players.sort_by {|player| player.id}.first
+  @player2 = @game.players.sort_by {|player| player.id}.last
   erb(:hand)
 end
 

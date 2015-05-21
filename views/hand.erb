@@ -18,7 +18,7 @@
         <h4><%= @player2.name %> bet/raises <%= @game.current_hand.last_bet %></h4>
       <% end %>
       <!-- display options -->
-      <!-- <% @game.current_hand.current_choices(@player1, @player2).each do |choice| %>
+      <% @game.current_hand.current_choices(@player1, @player2).each do |choice| %>
         <% if choice == "bet/raise" %>
           <h1>Amount</h1>
           <form action="/game/<%=@game.id %>/bet" method="post">
@@ -30,9 +30,9 @@
           <form action="/game/<%=@game.id%>/<%=choice%>" method="post">
             <button class = "btn btn-info" type="submit"><%=choice %></button>
           </form>
-        <%end%> -->
+        <%end%>
 
-      <!--<% end %> -->
+      <% end %>
     <% end %>
 
   </div>
