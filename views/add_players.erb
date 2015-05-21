@@ -1,20 +1,23 @@
-<h1>Choose players for the game: <%=@game.name %> </h1>
+<h1>Choose players for the game: <strong><%=@game.name %></strong> </h1>
 
 
 
 <h2> Add 2 Players to the Game </h2>
 <br><br>
+<br>
 
-<p>Players ready for <%=@game.name%>: </p>
-<hr>
-<ul class="list-unstyled">
+<h2>Players ready for <%=@game.name%>: </h2>
+
+<ol>
   <% @game.players.each do |player| %>
-  <li> <%=player.name %></li>
+  <li><h3> <%=player.name %></h3></li>
   <% end %>
-</ul>
-
+</ol>
+<br><br>
+<br><br>
+<br><br>
 <% if @game.players.length < 2 %>
-
+<hr>
 <p> Add Players Name </p>
 
   <div class= "form-group">
@@ -26,5 +29,5 @@
   </div>
 <% else %>
 
-  <a href="/game/<%= @game.id %>/preflop" type="button" class="btn btn-success">Deal first hand</a>
+  <a href="/game/<%= @game.id %>/preflop" type="button" class="btn btn-lg btn-success">Deal first hand</a>
 <% end %>

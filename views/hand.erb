@@ -1,5 +1,4 @@
 <div class="row">
-  <p>Round <%= @game.current_hand.current_round %></p>
   <p>Pot <%= @game.current_hand.pot %> </p>
 </div>
 <div class="row">
@@ -8,21 +7,22 @@
     <h3><%= @player1.name%> : stack <%= @player1.stack %></h3>
     <% if @player1.is_turn && !@game.current_hand.is_over? %>
 
-      <img class="face_up" src="/images/resources/<%= @player1.cards[0].url%>" />
-      <img class="face_up" src="/images/resources/<%= @player1.cards[1].url%>" />
+      <img class="face_up" src="/img/resources/<%= @player1.cards[0].url%>" />
+      <img class="face_up" src="/img/resources/<%= @player1.cards[1].url%>" />
 
     <% elsif !@game.current_hand.is_over? %>
 
-      <img class="face_down" src="/images/card_back.png" />
-      <img class="face_down" src="/images/card_back.png" />
+      <img class="face_down" src="/img/card_back.png" />
+      <img class="face_down" src="/img/card_back.png" />
 
     <% elsif @game.current_hand.is_over? %>
 
-      <img class="face_up" src="/images/resources/<%= @player1.cards[0].url%>" />
-      <img class="face_up" src="/images/resources/<%= @player1.cards[1].url%>" />
+      <img class="face_up" src="/img/resources/<%= @player1.cards[0].url%>" />
+      <img class="face_up" src="/img/resources/<%= @player1.cards[1].url%>" />
 
     <%end%>
-
+  <br><br>
+    <h2><strong>Pot size: <%= @game.current_hand.pot %> </strong></h2>
   </div>
   <div class= "col-md-6">
     <br><br>
@@ -42,8 +42,9 @@
           <br>
         <% else %>
           <form action="/game/<%=@game.id%>/<%=choice%>" method="post">
-            <button class = "btn btn-info" type="submit"><%=choice %></button>
+            <button class = "btn btn-lg btn-info" type="submit"><%=choice %></button>
           </form>
+          <br>
         <%end%>
 
       <% end %>
@@ -56,9 +57,24 @@
 
 <% if @game.current_hand.cards.any? %>
   <div class="row">
-    <% @game.current_hand.cards.each do |board_card| %>
-      <img class="face_up" src="/images/resources/<%= board_card.url %>" />
-    <% end %>
+    <div class = "col-md-8">
+      <% @game.current_hand.cards.each do |board_card| %>
+        <img class="face_up" src="/img/resources/<%= board_card.url %>" />
+        <% end %>
+    </div>
+
+    <div class="col-md-4">
+      <% if @game.current_hand.is_over? %>
+        <% if @game.current_hand.is_tie? %>
+          <h1>The game is a tie.</h1>
+        <% else %>
+          <h1> <%= @game.current_hand.winning_player.name %> wins the pot!</h1>
+        <% end %>
+          <a href="/game/<%=@game.id %>/preflop" type="button" class="btn btn-success">New hand</a>
+          <a href="/" type="button" class="btn btn-warning">New game</a>
+        <% end %>
+    </div>
+
   </div>
   <strong><hr></strong>
 <% end %>
@@ -69,18 +85,18 @@
 
     <% if @player2.is_turn && !@game.current_hand.is_over? %>
 
-      <img class="face_up" src="/images/resources/<%= @player2.cards[0].url%>" />
-      <img class="face_up" src="/images/resources/<%= @player2.cards[1].url%>" />
+      <img class="face_up" src="/img/resources/<%= @player2.cards[0].url%>" />
+      <img class="face_up" src="/img/resources/<%= @player2.cards[1].url%>" />
 
     <% elsif !@game.current_hand.is_over? %>
 
-      <img class="face_down" src="/images/card_back.png" />
-      <img class="face_down" src="/images/card_back.png" />
+      <img class="face_down" src="/img/card_back.png" />
+      <img class="face_down" src="/img/card_back.png" />
 
     <% elsif @game.current_hand.is_over? %>
 
-      <img class="face_up" src="/images/resources/<%= @player2.cards[0].url%>" />
-      <img class="face_up" src="/images/resources/<%= @player2.cards[1].url%>" />
+      <img class="face_up" src="/img/resources/<%= @player2.cards[0].url%>" />
+      <img class="face_up" src="/img/resources/<%= @player2.cards[1].url%>" />
 
     <%end%>
 
@@ -102,8 +118,9 @@
           <br>
         <% else %>
           <form action="/game/<%=@game.id%>/<%=choice%>" method="post">
-            <button class = "btn btn-info" type="submit"><%=choice %></button>
+            <button class = "btn btn-lg btn-info" type="submit"><%=choice %></button>
           </form>
+          <br>
         <%end%>
       <% end %>
     <% end %>
@@ -111,18 +128,6 @@
 
   </div>
 
-</div>
-
-<div class="row">
-  <% if @game.current_hand.is_over? %>
-    <% if @game.current_hand.is_tie? %>
-      <h1>The game is a tie.</h1>
-    <% else %>
-      <h1> <%= @game.current_hand.winning_player.name %> wins the pot</h1>
-    <% end %>
-    <a href="/game/<%=@game.id %>/preflop" type="button" class="btn btn-success">New hand</a>
-    <a href="/" type="button" class="btn btn-warning">New game</a>
-  <% end %>
 </div>
 
 
