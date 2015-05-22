@@ -35,7 +35,7 @@ class Game < ActiveRecord::Base
   def new_hand
     hands.create(pot: 0, current_round: "preflop", last_bet: 1)
     hand_count = hands.length
-    if players[0].is_bb == false
+    if players[1].is_bb
       players[0].update(is_bb: true, choice: "new round", is_turn: false)
       players[0].update_chips(2)
       players[1].update(is_bb: false, choice: "new round", is_turn: true)
