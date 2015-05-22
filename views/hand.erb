@@ -63,33 +63,32 @@
 
 <strong><hr></strong>
 
-<% if @game.current_hand.cards.any? %>
-  <div class="row">
-    <div class = "col-md-8">
-      <% @game.current_hand.cards.each do |board_card| %>
-        <img class="face_up" src="/img/resources/<%= board_card.url %>" />
-        <% end %>
-    </div>
-
-    <div class="col-md-4">
-      <% if @game.current_hand.is_over? %>
-        <% if @game.current_hand.is_tie? %>
-          <h1>The game is a tie.</h1>
-        <% else %>
-          <% @temp = Player.where(choice: 'fold').first%>
-          <% if @temp != nil %>
-            <h2> <%= @temp.name %> folds</h2>
-          <% end %>
-        <h1> <%= @game.current_hand.winning_player.name %> wins the pot</h1>
-        <% end %>
-        <a href="/game/<%=@game.id %>/preflop" type="button" class="btn btn-success">New hand</a>
-        <a href="/" type="button" class="btn btn-warning">New game</a>
+<div class="row">
+  <div class = "col-md-8">
+    <% @game.current_hand.cards.each do |board_card| %>
+      <img class="face_up" src="/img/resources/<%= board_card.url %>" />
       <% end %>
-    </div>
-
   </div>
-  <strong><hr></strong>
-<% end %>
+
+  <div class="col-md-4">
+    <% if @game.current_hand.is_over? %>
+      <% if @game.current_hand.is_tie? %>
+        <h1>The game is a tie.</h1>
+      <% else %>
+        <% @temp = Player.where(choice: 'fold').first%>
+        <% if @temp != nil %>
+          <h2> <%= @temp.name %> folds</h2>
+        <% end %>
+      <h1> <%= @game.current_hand.winning_player.name %> wins the pot</h1>
+      <% end %>
+      <a href="/game/<%=@game.id %>/preflop" type="button" class="btn btn-success">New hand</a>
+      <a href="/" type="button" class="btn btn-warning">New game</a>
+    <% end %>
+  </div>
+
+</div>
+<strong><hr></strong>
+
 
 <div class= "row">
   <div class= "col-md-5">
